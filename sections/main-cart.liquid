@@ -151,9 +151,13 @@
                                     assign mc_qty = 1
                                   endif
                                   assign mc_list_unit = item.price | times: mc_qty
+                                  assign mc_from_orig_unit = item.original_price | times: mc_qty
                                   assign mc_display_orig = item.original_line_price
                                   if mc_list_unit > mc_display_orig
                                     assign mc_display_orig = mc_list_unit
+                                  endif
+                                  if mc_from_orig_unit > mc_display_orig
+                                    assign mc_display_orig = mc_from_orig_unit
                                   endif
                                 -%}
                                 {%- if mc_display_orig > mc_line_final -%}
@@ -450,9 +454,13 @@
                               assign col_qty = 1
                             endif
                             assign col_list_unit = item.price | times: col_qty
+                            assign col_from_orig_unit = item.original_price | times: col_qty
                             assign col_display_orig = item.original_line_price
                             if col_list_unit > col_display_orig
                               assign col_display_orig = col_list_unit
+                            endif
+                            if col_from_orig_unit > col_display_orig
+                              assign col_display_orig = col_from_orig_unit
                             endif
                           -%}
                           {%- if col_display_orig > col_line_final -%}

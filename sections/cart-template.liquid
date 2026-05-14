@@ -99,9 +99,13 @@
                                 assign qty_line = 1
                               endif
                               assign list_from_unit = item.price | times: qty_line
+                              assign from_orig_unit = item.original_price | times: qty_line
                               assign display_orig_line = item.original_line_price
                               if list_from_unit > display_orig_line
                                 assign display_orig_line = list_from_unit
+                              endif
+                              if from_orig_unit > display_orig_line
+                                assign display_orig_line = from_orig_unit
                               endif
                             -%}
                             {% if display_orig_line > item_line_final %}
@@ -182,9 +186,13 @@
                           assign qty_line = 1
                         endif
                         assign list_from_unit = item.price | times: qty_line
+                        assign from_orig_unit = item.original_price | times: qty_line
                         assign display_orig_line = item.original_line_price
                         if list_from_unit > display_orig_line
                           assign display_orig_line = list_from_unit
+                        endif
+                        if from_orig_unit > display_orig_line
+                          assign display_orig_line = from_orig_unit
                         endif
                       -%}
                       {% if display_orig_line > item_line_final %}

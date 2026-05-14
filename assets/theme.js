@@ -1002,8 +1002,9 @@ theme.cartLineFinalCents = function (cartItem) {
 theme.cartLineDisplayOriginalCents = function (cartItem) {
   var qty = Math.max(1, theme.numCartMoney(cartItem.quantity));
   var origLine = theme.numCartMoney(cartItem.original_line_price);
-  var fromUnit = theme.numCartMoney(cartItem.price) * qty;
-  return Math.max(origLine, fromUnit);
+  var fromPrice = theme.numCartMoney(cartItem.price) * qty;
+  var fromOriginalUnit = theme.numCartMoney(cartItem.original_price) * qty;
+  return Math.max(origLine, fromPrice, fromOriginalUnit);
 };
 
 theme.cartLineHasSavings = function (cartItem) {
