@@ -59,6 +59,13 @@
           assign items_in_cart = cart.item_count | minus: gift_wraps_in_cart
         endif
       -%}
+      {%- liquid
+        assign cart_raw_line_sum = 0
+        for ci in cart.items
+          assign lf = ci.final_line_price | default: ci.line_price
+          assign cart_raw_line_sum = cart_raw_line_sum | plus: lf
+        endfor
+      -%}
       <main-cart id="MainCart-{{ section.id }}" class="cart__content flex flex-col lg:flex-row" data-section-id="{{ section.id }}">
         <div class="grow flex flex-col gap-8 md:gap-12">
           <form class="cart__form" action="{{ routes.cart_url }}" method="POST" id="cart">
@@ -164,8 +171,12 @@
                                       assign mc_display_orig = cart.original_total_price
                                     endif
                                   endif
+                                  assign mc_line_effective = mc_line_final
+                                  if cart_raw_line_sum > cart.total_price and cart_raw_line_sum > 0
+                                    assign mc_line_effective = mc_line_final | times: cart.total_price | divided_by: cart_raw_line_sum
+                                  endif
                                 -%}
-                                {%- if mc_display_orig > mc_line_final -%}
+                                {%- if mc_display_orig > mc_line_effective -%}
                                   <div class="text-sm flex flex-col gap-1">
                                     <div class="flex flex-wrap items-baseline gap-1d5">
                                       <span class="cart-item__strike-original"><s>
@@ -177,17 +188,17 @@
                                       </s></span>
                                       <span class="font-medium whitespace-nowrap">
                                         {%- if settings.currency_code_enabled -%}
-                                          {{- item.final_line_price | money_with_currency -}}
+                                          {{- mc_line_effective | money_with_currency -}}
                                         {%- else -%}
-                                          {{- item.final_line_price | money -}}
+                                          {{- mc_line_effective | money -}}
                                         {%- endif -%}
                                       </span>
                                     </div>
                                     {%- capture main_cart_line_save -%}
                                       {%- if settings.currency_code_enabled -%}
-                                        {{- mc_display_orig | minus: item.final_line_price | money_with_currency -}}
+                                        {{- mc_display_orig | minus: mc_line_effective | money_with_currency -}}
                                       {%- else -%}
-                                        {{- mc_display_orig | minus: item.final_line_price | money -}}
+                                        {{- mc_display_orig | minus: mc_line_effective | money -}}
                                       {%- endif -%}
                                     {%- endcapture -%}
                                     <p class="cart-item__line-savings text-xs m-0">{{ 'cart.general.line_save_html' | t: amount: main_cart_line_save }}</p>
@@ -200,6 +211,9 @@
                                       {%- for app in cart.cart_level_discount_applications -%}
                                         <p class="cart-item__discount-name m-0">{{ app.title }}</p>
                                       {%- endfor -%}
+                                    {%- endif -%}
+                                    {%- if cart.cart_level_discount_applications == blank and cart_raw_line_sum > cart.total_price and mc_display_orig > mc_line_effective -%}
+                                      <p class="cart-item__discount-name m-0">{{ 'cart.general.cart_wide_savings' | t }}</p>
                                     {%- endif -%}
                                   </div>
                                 {%- else -%}
@@ -472,8 +486,12 @@
                                 assign col_display_orig = cart.original_total_price
                               endif
                             endif
+                            assign col_line_effective = col_line_final
+                            if cart_raw_line_sum > cart.total_price and cart_raw_line_sum > 0
+                              assign col_line_effective = col_line_final | times: cart.total_price | divided_by: cart_raw_line_sum
+                            endif
                           -%}
-                          {%- if col_display_orig > col_line_final -%}
+                          {%- if col_display_orig > col_line_effective -%}
                             <div class="price text-base-xl grid gap-1 justify-items-end">
                               <span><s class="cart-item__strike-original">
                                 {%- if settings.currency_code_enabled -%}
@@ -485,17 +503,17 @@
                               <span>
                                 {%- liquid
                                   if settings.currency_code_enabled
-                                    echo item.final_line_price | money_with_currency
+                                    echo col_line_effective | money_with_currency
                                   else
-                                    echo item.final_line_price | money
+                                    echo col_line_effective | money
                                   endif
                                 -%}
                               </span>
                               {%- capture main_cart_col_save -%}
                                 {%- if settings.currency_code_enabled -%}
-                                  {{- col_display_orig | minus: item.final_line_price | money_with_currency -}}
+                                  {{- col_display_orig | minus: col_line_effective | money_with_currency -}}
                                 {%- else -%}
-                                  {{- col_display_orig | minus: item.final_line_price | money -}}
+                                  {{- col_display_orig | minus: col_line_effective | money -}}
                                 {%- endif -%}
                               {%- endcapture -%}
                               <span class="cart-item__line-savings text-sm font-normal block">{{ 'cart.general.line_save_html' | t: amount: main_cart_col_save }}</span>
@@ -513,14 +531,17 @@
                                   <span class="cart-item__discount-name block text-sm text-right">{{ app.title }}</span>
                                 {%- endfor -%}
                               {%- endif -%}
+                              {%- if cart.cart_level_discount_applications == blank and cart_raw_line_sum > cart.total_price and col_display_orig > col_line_effective -%}
+                                <span class="cart-item__discount-name block text-sm text-right">{{ 'cart.general.cart_wide_savings' | t }}</span>
+                              {%- endif -%}
                             </div>
                           {%- else -%}
                           <span class="price text-base-xl">
                             {%- liquid
                               if settings.currency_code_enabled
-                                echo item.final_line_price | money_with_currency
+                                echo col_line_effective | money_with_currency
                               else
-                                echo item.final_line_price | money
+                                echo col_line_effective | money
                               endif
                             -%}
                           </span>

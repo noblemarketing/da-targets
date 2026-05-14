@@ -1000,7 +1000,7 @@ theme.cartLineFinalCents = function (cartItem) {
   return theme.numCartMoney(cartItem.line_price);
 };
 
-theme.cartLineDisplayOriginalCents = function (cartItem, cart) {
+theme.cartLineLocalListCents = function (cartItem) {
   var qty = Math.max(1, theme.numCartMoney(cartItem.quantity));
   var origLine = theme.numCartMoney(cartItem.original_line_price);
   var fromPrice = theme.numCartMoney(cartItem.price) * qty;
@@ -1009,7 +1009,50 @@ theme.cartLineDisplayOriginalCents = function (cartItem, cart) {
     theme.numCartMoney(cartItem.compare_at_price) > 0
       ? theme.numCartMoney(cartItem.compare_at_price) * qty
       : 0;
-  var maxLocal = Math.max(origLine, fromPrice, fromOriginalUnit, fromCompareAt);
+  return Math.max(origLine, fromPrice, fromOriginalUnit, fromCompareAt);
+};
+
+theme.cartLinesRawFinalSumCents = function (cart) {
+  if (!cart || !cart.items) return 0;
+  var s = 0;
+  for (var i = 0; i < cart.items.length; i++) {
+    s += theme.cartLineFinalCents(cart.items[i]);
+  }
+  return s;
+};
+
+// When cart-wide discounts do not reduce per-line final_line_price, split
+// cart.total_price across lines proportionally so UI matches the footer.
+theme.cartLineEffectiveFinalCents = function (cartItem, cart) {
+  var raw = theme.cartLineFinalCents(cartItem);
+  if (!cart || !cart.items || cart.items.length === 0) return raw;
+  var items = cart.items;
+  var sumRaw = theme.cartLinesRawFinalSumCents(cart);
+  var cartTot = theme.numCartMoney(cart.total_price);
+  if (sumRaw <= cartTot + 1 || sumRaw === 0) return raw;
+  var key = cartItem.key;
+  var idx = -1;
+  for (var j = 0; j < items.length; j++) {
+    if (items[j].key === key) {
+      idx = j;
+      break;
+    }
+  }
+  if (idx < 0) return Math.round((raw / sumRaw) * cartTot);
+  if (idx === items.length - 1) {
+    var allocated = 0;
+    for (var k = 0; k < items.length - 1; k++) {
+      allocated += Math.round(
+        (theme.cartLineFinalCents(items[k]) / sumRaw) * cartTot
+      );
+    }
+    return Math.max(0, cartTot - allocated);
+  }
+  return Math.round((raw / sumRaw) * cartTot);
+};
+
+theme.cartLineDisplayOriginalCents = function (cartItem, cart) {
+  var maxLocal = theme.cartLineLocalListCents(cartItem);
   if (
     cart &&
     cart.items &&
@@ -1026,7 +1069,7 @@ theme.cartLineDisplayOriginalCents = function (cartItem, cart) {
 };
 
 theme.cartLineHasSavings = function (cartItem, cart) {
-  var fin = theme.cartLineFinalCents(cartItem);
+  var fin = theme.cartLineEffectiveFinalCents(cartItem, cart);
   var orig = theme.cartLineDisplayOriginalCents(cartItem, cart);
   if (orig > fin) return true;
   if (
@@ -1040,7 +1083,8 @@ theme.cartLineHasSavings = function (cartItem, cart) {
     cart &&
     cart.items &&
     cart.items.length === 1 &&
-    theme.numCartMoney(cart.original_total_price) > fin
+    theme.numCartMoney(cart.original_total_price) >
+      theme.cartLineFinalCents(cartItem)
   ) {
     return true;
   }
@@ -1076,11 +1120,26 @@ theme.cartDiscountNamesMarkup = function (cartItem, cart) {
     }
   }
   var orig = theme.cartLineDisplayOriginalCents(cartItem, cart);
-  var fin = theme.cartLineFinalCents(cartItem);
+  var fin = theme.cartLineEffectiveFinalCents(cartItem, cart);
+  var hadCartLevelTitle = false;
   if (cart && cart.cart_level_discount_applications && cart.cart_level_discount_applications.length && orig > fin) {
     for (var k = 0; k < cart.cart_level_discount_applications.length; k++) {
       var app = cart.cart_level_discount_applications[k];
       addTitle(app.title || (app.discount_application && app.discount_application.title));
+      hadCartLevelTitle = true;
+    }
+  }
+  var sumR = theme.cartLinesRawFinalSumCents(cart);
+  var ct = theme.numCartMoney(cart && cart.total_price);
+  if (!hadCartLevelTitle && cart && orig > fin && sumR > ct + 1) {
+    var beforeImplicit = out;
+    if (cart.discount_codes && cart.discount_codes.length) {
+      for (var d = 0; d < cart.discount_codes.length; d++) {
+        if (cart.discount_codes[d].code) addTitle(cart.discount_codes[d].code);
+      }
+    }
+    if (out === beforeImplicit && theme.strings && theme.strings.cartDiscountFallback) {
+      addTitle(theme.strings.cartDiscountFallback);
     }
   }
   return out;
@@ -1310,7 +1369,7 @@ window.QtySelector = (function() {
         });
       }
 
-      var finalLineAmount = theme.cartLineFinalCents(cartItem);
+      var finalLineAmount = theme.cartLineEffectiveFinalCents(cartItem, cart);
       var displayOrigCents = theme.cartLineDisplayOriginalCents(cartItem, cart);
       var showStrikeSavings = displayOrigCents > finalLineAmount;
       var discountsApplied = showStrikeSavings;
@@ -5051,7 +5110,7 @@ theme.miniCart = (function(){
       for (let i = 0; i < forLoop; i++) { 
         var line = i+1;
         var product = cart.items[i];
-        var finalLine = theme.cartLineFinalCents(product);
+        var finalLine = theme.cartLineEffectiveFinalCents(product, cart);
         var displayOrig = theme.cartLineDisplayOriginalCents(product, cart);
         var priceRow = '';
         if (displayOrig > finalLine) {
