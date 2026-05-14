@@ -985,8 +985,9 @@ window.Modals = (function() {
   return Modal;
 })();
 
-// Cart line helpers: Ajax money can be string; cart-level discounts may leave
-// original_line_price === final_line_price while list unit × qty is higher.
+// Cart line helpers: Ajax money can be string; cart-level % discounts often
+// leave line original_line_price === final_line_price. Use max(line fields,
+// original_price×qty, compare_at×qty) and for a 1-line cart cart.original_total_price.
 theme.numCartMoney = function (v) {
   if (v == null || v === '') return 0;
   var n = Number(v);
@@ -999,17 +1000,34 @@ theme.cartLineFinalCents = function (cartItem) {
   return theme.numCartMoney(cartItem.line_price);
 };
 
-theme.cartLineDisplayOriginalCents = function (cartItem) {
+theme.cartLineDisplayOriginalCents = function (cartItem, cart) {
   var qty = Math.max(1, theme.numCartMoney(cartItem.quantity));
   var origLine = theme.numCartMoney(cartItem.original_line_price);
   var fromPrice = theme.numCartMoney(cartItem.price) * qty;
   var fromOriginalUnit = theme.numCartMoney(cartItem.original_price) * qty;
-  return Math.max(origLine, fromPrice, fromOriginalUnit);
+  var fromCompareAt =
+    theme.numCartMoney(cartItem.compare_at_price) > 0
+      ? theme.numCartMoney(cartItem.compare_at_price) * qty
+      : 0;
+  var maxLocal = Math.max(origLine, fromPrice, fromOriginalUnit, fromCompareAt);
+  if (
+    cart &&
+    cart.items &&
+    cart.items.length === 1 &&
+    theme.numCartMoney(cart.original_total_price) > 0
+  ) {
+    var cartOrig = theme.numCartMoney(cart.original_total_price);
+    var fin = theme.cartLineFinalCents(cartItem);
+    if (cartOrig > fin) {
+      maxLocal = Math.max(maxLocal, cartOrig);
+    }
+  }
+  return maxLocal;
 };
 
-theme.cartLineHasSavings = function (cartItem) {
+theme.cartLineHasSavings = function (cartItem, cart) {
   var fin = theme.cartLineFinalCents(cartItem);
-  var orig = theme.cartLineDisplayOriginalCents(cartItem);
+  var orig = theme.cartLineDisplayOriginalCents(cartItem, cart);
   if (orig > fin) return true;
   if (
     cartItem.line_level_discount_allocations &&
@@ -1018,6 +1036,14 @@ theme.cartLineHasSavings = function (cartItem) {
     return true;
   }
   if (cartItem.discounts && cartItem.discounts.length) return true;
+  if (
+    cart &&
+    cart.items &&
+    cart.items.length === 1 &&
+    theme.numCartMoney(cart.original_total_price) > fin
+  ) {
+    return true;
+  }
   return false;
 };
 
@@ -1049,16 +1075,12 @@ theme.cartDiscountNamesMarkup = function (cartItem, cart) {
       addTitle(cartItem.discounts[j].title);
     }
   }
-  var orig = theme.cartLineDisplayOriginalCents(cartItem);
+  var orig = theme.cartLineDisplayOriginalCents(cartItem, cart);
   var fin = theme.cartLineFinalCents(cartItem);
-  if (
-    cart &&
-    cart.cart_level_discount_applications &&
-    cart.cart_level_discount_applications.length &&
-    orig > fin
-  ) {
+  if (cart && cart.cart_level_discount_applications && cart.cart_level_discount_applications.length && orig > fin) {
     for (var k = 0; k < cart.cart_level_discount_applications.length; k++) {
-      addTitle(cart.cart_level_discount_applications[k].title);
+      var app = cart.cart_level_discount_applications[k];
+      addTitle(app.title || (app.discount_application && app.discount_application.title));
     }
   }
   return out;
@@ -1289,7 +1311,7 @@ window.QtySelector = (function() {
       }
 
       var finalLineAmount = theme.cartLineFinalCents(cartItem);
-      var displayOrigCents = theme.cartLineDisplayOriginalCents(cartItem);
+      var displayOrigCents = theme.cartLineDisplayOriginalCents(cartItem, cart);
       var showStrikeSavings = displayOrigCents > finalLineAmount;
       var discountsApplied = showStrikeSavings;
 
@@ -1324,7 +1346,7 @@ window.QtySelector = (function() {
               )
             )
           : '',
-        discountNamesHtml: theme.cartLineHasSavings(cartItem)
+        discountNamesHtml: theme.cartLineHasSavings(cartItem, cart)
           ? theme.cartDiscountNamesMarkup(cartItem, cart)
           : ''
       };
@@ -5030,7 +5052,7 @@ theme.miniCart = (function(){
         var line = i+1;
         var product = cart.items[i];
         var finalLine = theme.cartLineFinalCents(product);
-        var displayOrig = theme.cartLineDisplayOriginalCents(product);
+        var displayOrig = theme.cartLineDisplayOriginalCents(product, cart);
         var priceRow = '';
         if (displayOrig > finalLine) {
           var origLine = theme.Currency.formatMoney(

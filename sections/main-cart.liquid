@@ -159,6 +159,11 @@
                                   if mc_from_orig_unit > mc_display_orig
                                     assign mc_display_orig = mc_from_orig_unit
                                   endif
+                                  if cart.items.size == 1 and cart.original_total_price > mc_line_final
+                                    if cart.original_total_price > mc_display_orig
+                                      assign mc_display_orig = cart.original_total_price
+                                    endif
+                                  endif
                                 -%}
                                 {%- if mc_display_orig > mc_line_final -%}
                                   <div class="text-sm flex flex-col gap-1">
@@ -461,6 +466,11 @@
                             endif
                             if col_from_orig_unit > col_display_orig
                               assign col_display_orig = col_from_orig_unit
+                            endif
+                            if cart.items.size == 1 and cart.original_total_price > col_line_final
+                              if cart.original_total_price > col_display_orig
+                                assign col_display_orig = cart.original_total_price
+                              endif
                             endif
                           -%}
                           {%- if col_display_orig > col_line_final -%}

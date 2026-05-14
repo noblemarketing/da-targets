@@ -107,6 +107,11 @@
                               if from_orig_unit > display_orig_line
                                 assign display_orig_line = from_orig_unit
                               endif
+                              if cart.items.size == 1 and cart.original_total_price > item_line_final
+                                if cart.original_total_price > display_orig_line
+                                  assign display_orig_line = cart.original_total_price
+                                endif
+                              endif
                             -%}
                             {% if display_orig_line > item_line_final %}
                               <div class="d-flex flex-wrap align-items-baseline gap-1">
@@ -193,6 +198,11 @@
                         endif
                         if from_orig_unit > display_orig_line
                           assign display_orig_line = from_orig_unit
+                        endif
+                        if cart.items.size == 1 and cart.original_total_price > item_line_final
+                          if cart.original_total_price > display_orig_line
+                            assign display_orig_line = cart.original_total_price
+                          endif
                         endif
                       -%}
                       {% if display_orig_line > item_line_final %}
