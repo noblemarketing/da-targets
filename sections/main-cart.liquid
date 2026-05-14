@@ -169,7 +169,12 @@
                                         {{- item.original_line_price | minus: item.final_line_price | money -}}
                                       {%- endif -%}
                                     {%- endcapture -%}
-                                    <p class="cart-item__line-savings text-xs text-opacity m-0">{{ 'cart.general.line_save_html' | t: amount: main_cart_line_save }}</p>
+                                    <p class="cart-item__line-savings text-xs m-0">{{ 'cart.general.line_save_html' | t: amount: main_cart_line_save }}</p>
+                                    {%- if item.line_level_discount_allocations == blank and item.discounts != blank -%}
+                                      {%- for d in item.discounts -%}
+                                        <p class="cart-item__discount-name m-0">{{ d.title }}</p>
+                                      {%- endfor -%}
+                                    {%- endif -%}
                                   </div>
                                 {%- else -%}
                                 <div class="price{% if item.original_price != item.final_price %} price--on-sale{% endif %} text-sm flex flex-wrap gap-1d5">
@@ -446,7 +451,16 @@
                                   {{- item.original_line_price | minus: item.final_line_price | money -}}
                                 {%- endif -%}
                               {%- endcapture -%}
-                              <span class="cart-item__line-savings text-sm font-normal text-opacity block">{{ 'cart.general.line_save_html' | t: amount: main_cart_col_save }}</span>
+                              <span class="cart-item__line-savings text-sm font-normal block">{{ 'cart.general.line_save_html' | t: amount: main_cart_col_save }}</span>
+                              {%- if item.line_level_discount_allocations != blank -%}
+                                {%- for a in item.line_level_discount_allocations -%}
+                                  <span class="cart-item__discount-name block text-sm text-right">{{ a.discount_application.title }}</span>
+                                {%- endfor -%}
+                              {%- elsif item.discounts != blank -%}
+                                {%- for d in item.discounts -%}
+                                  <span class="cart-item__discount-name block text-sm text-right">{{ d.title }}</span>
+                                {%- endfor -%}
+                              {%- endif -%}
                             </div>
                           {%- else -%}
                           <span class="price text-base-xl">

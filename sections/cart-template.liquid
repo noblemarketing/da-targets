@@ -102,12 +102,18 @@
                               </div>
                               {%- capture cart_line_save_formatted -%}{{ item.original_line_price | minus: item_line_final | money }}{%- endcapture -%}
                               <p class="cart-item__line-savings mb-0">{{ 'cart.general.line_save_html' | t: amount: cart_line_save_formatted }}</p>
+                              {%- if item.line_level_discount_allocations.size > 0 -%}
+                                {%- for a in item.line_level_discount_allocations -%}
+                                  <p class="cart-item__discount-name mb-0">{{ a.discount_application.title }}</p>
+                                {%- endfor -%}
+                              {%- elsif item.discounts.size > 0 -%}
+                                {%- for discount in item.discounts -%}
+                                  <p class="cart-item__discount-name mb-0">{{ discount.title }}</p>
+                                {%- endfor -%}
+                              {%- endif -%}
                             {% else %}
                               <span class="cart__item-total text-body">{{ item_line_final | money }}</span>
                             {% endif %}
-                            {% for discount in item.discounts %}
-                              <p class="cart-item__discount cart__item-total">{{ discount.title }}</p>
-                            {% endfor %}
                           </div>
                           <div class="qty-mobile">
                             <label for="Updates_{{ item.key }}" class="cart__quantity-label hide">{{ 'cart.label.quantity' | t }}</label>
@@ -164,12 +170,18 @@
                         </div>
                         {%- capture cart_line_save_formatted -%}{{ item.original_line_price | minus: item_line_final | money }}{%- endcapture -%}
                         <p class="cart-item__line-savings mb-0">{{ 'cart.general.line_save_html' | t: amount: cart_line_save_formatted }}</p>
+                        {%- if item.line_level_discount_allocations.size > 0 -%}
+                          {%- for a in item.line_level_discount_allocations -%}
+                            <p class="cart-item__discount-name mb-0">{{ a.discount_application.title }}</p>
+                          {%- endfor -%}
+                        {%- elsif item.discounts.size > 0 -%}
+                          {%- for discount in item.discounts -%}
+                            <p class="cart-item__discount-name mb-0">{{ discount.title }}</p>
+                          {%- endfor -%}
+                        {%- endif -%}
                       {% else %}
                         <span class="cart__item-total text-body">{{ item_line_final | money }}</span>
                       {% endif %}
-                      {% for discount in item.discounts %}
-                        <p class="cart-item__discount cart__item-total">{{ discount.title }}</p>
-                      {% endfor %}
                     </td>
                   </tr>
                 {% endfor %}
@@ -349,13 +361,9 @@
                 <span class="cart__item-total">{{{linePrice}}}</span>
                 </div>
                 <p class="cart-item__line-savings mb-0">{{{lineSavingsHtml}}}</p>
+                {{{discountNamesHtml}}}
               {{else}}
                 <span class="cart__item-total">{{{linePrice}}}</span>
-              {{/if}}
-              {{#if discountsApplied}}
-              {{#each discounts}}
-                <p class="cart-item__discount cart__item-total">{{ this.title }}</p>
-                {{/each}}
               {{/if}}
               </div>
               <div class="qty-mobile">
@@ -401,13 +409,9 @@
             <span class="cart__item-total">{{{linePrice}}}</span>
             </div>
             <p class="cart-item__line-savings mb-0">{{{lineSavingsHtml}}}</p>
+            {{{discountNamesHtml}}}
           {{else}}
             <span class="cart__item-total">{{{linePrice}}}</span>
-          {{/if}}
-          {{#if discountsApplied}}
-          {{#each discounts}}
-            <p class="cart-item__discount cart__item-total">{{ this.title }}</p>
-            {{/each}}
           {{/if}}
         </td>
       </tr>

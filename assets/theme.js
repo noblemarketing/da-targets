@@ -1246,6 +1246,9 @@ window.QtySelector = (function() {
                 theme.moneyFormat
               )
             )
+          : '',
+        discountNamesHtml: discountsApplied
+          ? theme.cartDiscountNamesMarkup(cartItem)
           : ''
       };
 
@@ -4895,6 +4898,36 @@ theme.openAddon = (function(){
 
 
 
+// Cart line: discount titles for markup (Cart API + Handlebars + mini cart)
+theme.cartDiscountNamesMarkup = function (cartItem) {
+  var seen = {};
+  var out = '';
+  function esc(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/"/g, '&quot;');
+  }
+  function addTitle(title) {
+    if (!title || seen[title]) return;
+    seen[title] = true;
+    out += '<p class="cart-item__discount-name m-0">' + esc(title) + '</p>';
+  }
+  var allocs = cartItem.line_level_discount_allocations;
+  if (allocs && allocs.length) {
+    for (var i = 0; i < allocs.length; i++) {
+      if (allocs[i].discount_application) {
+        addTitle(allocs[i].discount_application.title);
+      }
+    }
+  } else if (cartItem.discounts && cartItem.discounts.length) {
+    for (var j = 0; j < cartItem.discounts.length; j++) {
+      addTitle(cartItem.discounts[j].title);
+    }
+  }
+  return out;
+};
+
 // MiniCart
 theme.miniCart = (function(){
   var miniCart = '.js-mini-cart',
@@ -4971,27 +5004,25 @@ theme.miniCart = (function(){
             '[amount]',
             saveLine
           );
+          var discountNames =
+            typeof theme.cartDiscountNamesMarkup === 'function'
+              ? theme.cartDiscountNamesMarkup(product)
+              : '';
           priceRow =
             '<div class="mini-cart-item__pricing"><span class="mini-cart-item__price-original"><s>' +
             origLine +
             '</s></span> <span class="mini-cart-item__price-current">' +
             newLine +
-            '</span> <span class="mini-cart-item__price-qty text-muted">× ' +
-            product.quantity +
             '</span></div><p class="mini-cart-item__savings">' +
             saveLabel +
-            '</p>';
+            '</p>' +
+            discountNames;
         } else {
           var productPrice = theme.Currency.formatMoney(
             product.price,
             theme.moneyFormat
           );
-          priceRow =
-            '<span>' +
-            productPrice +
-            '</span> <span class="text-muted">× ' +
-            product.quantity +
-            '</span>';
+          priceRow = '<span>' + productPrice + '</span>';
         }
         theme.GiftWrap.hideGift(product.id);
         htmlCart += `<div class="mini-cart-item">`;
