@@ -227,14 +227,13 @@ table.no-headings td:last-child {
   padding-block-start: var(--sp-4);
 }
 
-/* Mobile / small tablet: full order summary in flow above line items (no sticky strip) */
+/* Mobile / small tablet: line items first, full order summary below (no sticky strip) */
 @media screen and (max-width: 1023px) {
   main-cart.cart__content {
     flex-direction: column;
   }
 
   main-cart.cart__content > .grow-0 {
-    order: -1;
     width: 100%;
     max-width: 100%;
   }
@@ -249,5 +248,10 @@ table.no-headings td:last-child {
     top: auto !important;
     bottom: auto !important;
     align-self: stretch;
+  }
+
+  main-cart.cart__content .cart__sidebar {
+    margin-inline: 0;
+    padding-inline: var(--gap-padding);
   }
 }

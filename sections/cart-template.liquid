@@ -44,15 +44,18 @@
   @media (max-width: 991px) {
     .cart-page-layout {
       display: flex;
-      flex-direction: column-reverse;
+      flex-direction: column;
     }
     .cart-page-layout > [class*="col-"] {
       width: 100%;
       max-width: 100%;
       flex: 0 0 100%;
     }
-    .cart-page-layout > .col-lg-8 {
-      margin-top: 1.25rem;
+    .cart-page-layout > .col-lg-4 {
+      margin-top: 1.5rem;
+    }
+    .cart.pb-5 {
+      padding-bottom: calc(2.5rem + env(safe-area-inset-bottom, 0px));
     }
   }
 </style>
