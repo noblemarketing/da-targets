@@ -1,0 +1,616 @@
+<!-- advanced-blog.liquid -->
+<style>
+@media (min-width: 768px) {
+  .customstyle{{ section.id }} .bloglist,
+  .customstyle{{ section.id }} .bloglist-item ,
+  .customstyle{{ section.id }} .bloglist-item > div > .blog__item--3 ,
+  .customstyle{{ section.id }} .bloglist-item > div > .blog__item--3 .content-block__image ,
+  .customstyle{{ section.id }} .bloglist-item > div > .blog__item--3 .content-block__image a ,
+  .customstyle{{ section.id }} .bloglist-item > div > .blog__item--3 .content-block__image a .article__photo-container ,
+  .customstyle{{ section.id }} .bloglist-item > div > .blog__item--3 .content-block__image a .article__photo-container .article__photo-wrapper ,
+  .customstyle{{ section.id }} .bloglist-item > div {
+    height: 100%;
+  }
+}
+.customstyle{{ section.id }} .bloglist-item > div > .blog__item--3 .content-block__image a {
+  display: block;
+}
+.customstyle{{ section.id }} h4.blog__title-link {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+</style>
+<div class="customstyle{{ section.id }} blog-section{{section.id}}" data-aos="{{ section.settings.animation }}">
+  {%- render 'style-section' -%}
+<div class="{{ section.settings.setwidth }}">
+  <div class="section-block">
+    {%- render 'section-heading' -%}
+
+    <div class="bloglist-wrapper dots-negative mt-40" data-aos="{{ section.settings.animation }}">
+
+        <div class="row">
+        {%- for block in section.blocks -%}
+            {%- liquid
+                case block.settings.width 
+                when 'auto' 
+                assign block_width = 'col-lg col-12' 
+                when '20%' 
+                assign block_width = 'col-1-5 col-md-6 col-12' 
+                when '25%' 
+                assign block_width = 'col-lg-3 col-md-3 col-12' 
+                when '33%' 
+                assign block_width = 'col-lg-4 col-md-4 ' 
+                when '41%' 
+                assign block_width = 'col-lg-5 col-md-12 ' 
+                when '50%' 
+                assign block_width = 'col-lg-6 ' 
+                when '58%' 
+                assign block_width = 'col-lg-7 col-md-12 ' 
+                when '66%' 
+                assign block_width = 'col-lg-8 col-md-12 ' 
+                when '75%' 
+                assign block_width = 'col-lg-9 col-md-9 col-12 ' 
+                when '100%' 
+                assign block_width = 'col-12 ' 
+                endcase 
+            -%}
+            <div class="{{ block_width }}" {{ block.shopify_attributes }}>
+
+                <div class="bloglist mb-md-0 mb-3" id="Bloglist-{{ block.id }}">
+                  {%- assign blog = blogs[block.settings.blog] -%}
+                  {%- assign limit = block.settings.limit -%}
+                  {%- if blog != blank -%}
+                  {%- for article in blog.articles limit: limit -%}
+                  <div class="bloglist-item">
+                    <div data-aos="{{ section.settings.animation }}"  data-aos-delay="{{ forloop.index | times: 100 }}">
+                      {%- liquid
+                        case block.settings.item_style
+                        when 'blog-1'
+                          render 'blog-grid-1' , settings: block.settings , article : article, image_size : block.settings.image_size, enable_btn_blog : block.settings.enable_btn_blog, enable_btn_line: block.settings.enable_btn_line, enable_date : block.settings.enable_date, enable_tag : block.settings.enable_tag, enable_comment: block.settings.enable_comment, enable_short : block.settings.enable_short
+                        when 'blog-3'
+                          render 'blog-grid-3' , settings: block.settings , article : article, image_size : block.settings.image_size, enable_btn_blog : block.settings.enable_btn_blog, enable_btn_line: block.settings.enable_btn_line, enable_date : block.settings.enable_date, enable_tag : block.settings.enable_tag, enable_comment: block.settings.enable_comment, enable_short : block.settings.enable_short
+                        when 'blog-5'
+                          render 'blog-grid-5', settings: block.settings , article : article, image_size : block.settings.image_size, enable_btn_blog : block.settings.enable_btn_blog, enable_btn_line: block.settings.enable_btn_line, enable_date : block.settings.enable_date, enable_tag : block.settings.enable_tag, enable_comment: block.settings.enable_comment, enable_short : block.settings.enable_short
+                        when 'blog-6'
+                          render 'blog-grid-6', settings: block.settings , article : article, image_size : block.settings.image_size, enable_btn_blog : block.settings.enable_btn_blog, enable_btn_line: block.settings.enable_btn_line, enable_date : block.settings.enable_date, enable_tag : block.settings.enable_tag, enable_comment: block.settings.enable_comment, enable_short : block.settings.enable_short
+                        when 'blog-7'
+                          render 'blog-grid-7', settings: block.settings , article : article, image_size : block.settings.image_size, enable_btn_blog : block.settings.enable_btn_blog, enable_btn_line: block.settings.enable_btn_line, enable_date : block.settings.enable_date, enable_tag : block.settings.enable_tag, enable_comment: block.settings.enable_comment, enable_short : block.settings.enable_short
+                        else
+                          render 'blog-grid-blank'
+                        endcase
+                      -%}
+                    </div>
+                  </div>
+                  {%- endfor -%}
+                  {%- else -%}
+                  {%- for i in (1..limit) -%}
+                  <div class="bloglist-item col">
+                    <div data-aos="{{ section.settings.animation }}"  data-aos-delay="{{ forloop.index | times: 100 }}">
+                    {%- render 'blog-grid-blank' -%}
+                  </div>
+                  </div>
+                  {%- endfor -%}
+                  {%- endif -%}
+                </div>
+
+            </div>
+        {%- endfor -%}
+        </div>
+
+
+    </div>
+
+    {%- render 'section-bot' -%}
+  </div>
+</div>
+</div>
+
+{% schema %}
+{
+  "name": "Blog posts",
+  "class": "index-section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "animation",
+      "options": [
+        {
+          "value": "",
+          "label": "None"
+        },
+        {
+          "value": "fade",
+          "label": "Fade"
+        },
+        {
+          "value": "fade-up",
+          "label": "Fade Up"
+        },
+        {
+          "value": "fade-down",
+          "label": "Fade Down"
+        },
+        {
+          "value": "fade-left",
+          "label": "Fade Left"
+        },
+        {
+          "value": "fade-right",
+          "label": "Fade Right"
+        },
+        {
+          "value": "fade-up-right",
+          "label": "Fade Up Right"
+        },
+        {
+          "value": "fade-up-left",
+          "label": "Fade Up Left"
+        },
+        {
+          "value": "fade-down-right",
+          "label": "Fade Down Right"
+        },
+        {
+          "value": "fade-down-left",
+          "label": "Fade Down Left"
+        },
+        {
+          "value": "flip-up",
+          "label": "Flip Up"
+        },
+        {
+          "value": "flip-down",
+          "label": "Flip Down"
+        },
+        {
+          "value": "flip-left",
+          "label": "Flip Left"
+        },
+        {
+          "value": "flip-right",
+          "label": "Flip Right"
+        },
+        {
+          "value": "slide-up",
+          "label": "Slide Up"
+        },
+        {
+          "value": "slide-down",
+          "label": "Slide Down"
+        },
+        {
+          "value": "slide-left",
+          "label": "Slide Left"
+        },
+        {
+          "value": "slide-right",
+          "label": "Slide Right"
+        },
+        {
+          "value": "zoom-in",
+          "label": "Zoom In"
+        },
+        {
+          "value": "zoom-in-up",
+          "label": "Zoom In Up"
+        },
+        {
+          "value": "zoom-in-down",
+          "label": "Zoom In Down"
+        },
+        {
+          "value": "zoom-in-left",
+          "label": "Zoom In Left"
+        },
+        {
+          "value": "zoom-in-right",
+          "label": "Zoom In Right"
+        },
+        {
+          "value": "zoom-out",
+          "label": "Zoom Out"
+        },
+        {
+          "value": "zoom-out-up",
+          "label": "Zoom Out Up"
+        },
+        {
+          "value": "zoom-out-down",
+          "label": "Zoom Out Down"
+        },
+        {
+          "value": "zoom-out-left",
+          "label": "Zoom Out Feft"
+        },
+        {
+          "value": "zoom-out-right",
+          "label": "Zoom Out Right"
+        }
+      ],
+      "label": "Select Animation"
+    },
+    {
+      "type": "select",
+      "id": "setwidth",
+      "label": "Full Width",
+      "default": "container",
+      "options": [
+        {
+          "value": "container",
+          "label": "Box"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Container Fluid"
+        },
+        {
+          "value": "full",
+          "label": "Full"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "bgsection",
+      "label": "Background Section",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "title_top",
+      "label": "Sub Title Top",
+      "default": "Sub Title Top"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Blog posts"
+    },
+    {
+      "type": "text",
+      "id": "title_sp",
+      "label": "Title Inner",
+      "default": "Blog"
+    },
+    {
+      "type": "textarea",
+      "id": "des",
+      "label": "HTML / Description"
+    },
+    {
+      "type": "liquid",
+      "id": "button_heading",
+      "label": "Button text",
+      "default": "discover now"
+    },
+    {
+      "type": "url",
+      "id": "link_heading",
+      "label": "Button Link"
+    },
+    {
+      "type": "select",
+      "id": "style_btn",
+      "label": "Style Button",
+      "default": "btn-underline btn-underline-white",
+      "options": [
+        {
+          "value": "btn-theme",
+          "label": "Button Box"
+        },
+        {
+          "value": "btn-theme btn-black",
+          "label": "Button Box Black"
+        },
+        {
+          "value": "btn-theme btn-white",
+          "label": "Button Box White"
+        },
+        {
+          "value": "btn-underline",
+          "label": "Button Line"
+        },
+        {
+          "value": "btn-underline btn-underline-white",
+          "label": "Button Line White"
+        },
+        {
+          "value": "btn-outline",
+          "label": "Button Outline"
+        },
+        {
+          "value": "btn-outline btn-outline-white",
+          "label": "Button Outline White"
+        }
+      ]
+    },
+    {
+      "type": "liquid",
+      "id": "button_bot",
+      "label": "Button Bottom text",
+      "default": "discover now"
+    },
+    {
+      "type": "url",
+      "id": "link_bot",
+      "label": "Button Bottom Link"
+    },
+    {
+      "type": "select",
+      "id": "style_btn_bot",
+      "label": "Style Button Bottom",
+      "default": "btn-underline btn-underline-white",
+      "options": [
+        {
+          "value": "btn-theme",
+          "label": "Button Box"
+        },
+        {
+          "value": "btn-theme btn-black",
+          "label": "Button Box Black"
+        },
+        {
+          "value": "btn-theme btn-white",
+          "label": "Button Box White"
+        },
+        {
+          "value": "btn-underline",
+          "label": "Button Line"
+        },
+        {
+          "value": "btn-underline btn-underline-white",
+          "label": "Button Line White"
+        },
+        {
+          "value": "btn-outline",
+          "label": "Button Outline"
+        },
+        {
+          "value": "btn-outline btn-outline-white",
+          "label": "Button Outline White"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "align-heading",
+      "label": "Align Heading",
+      "default": "center",
+      "options": [
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Section Padding "
+    },
+    {
+      "type": "text",
+      "id": "paddingsection",
+      "label": "Padding Section",
+      "default": "0px 0px 0px 0px",
+      "info": "Padding: Top Right Bottom Left"
+    },
+    {
+      "type": "text",
+      "id": "paddingmobile",
+      "label": "Padding Section Mobile",
+      "default": "40px 0px 40px 0px",
+      "info": "Padding: Top Right Bottom Left"
+    },
+    {
+      "type": "header",
+      "content": "Section Margin "
+    },
+    {
+      "type": "text",
+      "id": "marginsection",
+      "label": "Margin Section",
+      "default": "0px 0px 0px 0px",
+      "info": "Margin: Top Right Bottom Left"
+    },
+    {
+      "type": "text",
+      "id": "marginmobile",
+      "label": "Margin Mobile",
+      "default": "0px 0px 0px 0px",
+      "info": "Margin: Top Right Bottom Left"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "blog-item",
+      "name": "Blog item",
+      "settings": [
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Container width",
+          "default": "33%",
+          "options": [
+            {
+              "value": "auto",
+              "label": "Auto"
+            },
+            {
+              "value": "20%",
+              "label": "20%"
+            },
+            {
+              "value": "25%",
+              "label": "25%"
+            },
+            {
+              "value": "33%",
+              "label": "33%"
+            },
+            {
+              "value": "41%",
+              "label": "41%"
+            },
+            {
+              "value": "50%",
+              "label": "50%"
+            },
+            {
+              "value": "58%",
+              "label": "58%"
+            },
+            {
+              "value": "66%",
+              "label": "66%"
+            },
+            {
+              "value": "75%",
+              "label": "75%"
+            },
+            {
+              "value": "100%",
+              "label": "100%"
+            }
+          ]
+        },
+        {
+          "label": "Blog",
+          "id": "blog",
+          "type": "blog"
+        },
+        {
+          "type": "header",
+          "content": "Style Item "
+        },
+        {
+          "type": "select",
+          "id": "item_style",
+          "label": "Style Item ",
+          "default": "blog-1",
+          "options": [
+            {
+              "value": "blog-1",
+              "label": "Item Basic"
+            },
+            {
+              "value": "blog-3",
+              "label": "Item Overlay"
+            },
+            {
+              "value": "blog-5",
+              "label": "Item Box"
+            },
+            {
+              "value": "blog-6",
+              "label": "Item Classic"
+            },
+            {
+              "value": "blog-7",
+              "label": "Item Classic Box"
+            }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_btn_blog",
+          "label": "Enable Button",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_btn_line",
+          "label": "Enable Button Line",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_date",
+          "label": "Enable Date",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_tag",
+          "label": "Enable Tag",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_comment",
+          "label": "Enable comment",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_short",
+          "label": "Enable Excerpt",
+          "default": true
+        },
+        {
+          "type": "select",
+          "id": "image_size",
+          "options": [
+            {
+              "value": "auto",
+              "label": "Adapt to image"
+            },
+            {
+              "value": "portrait",
+              "label": "Portrait (2:3)"
+            },
+            {
+              "value": "landscape",
+              "label": "Landscape (4:3)"
+            },
+            {
+              "value": "wide",
+              "label": "Wide (16:9)"
+            },
+            {
+              "value": "square",
+              "label": "Square (1:1)"
+            }
+          ],
+          "default": "auto",
+          "label": "Image ratio"
+        },
+        {
+          "type": "range",
+          "id": "limit",
+          "min": 1,
+          "max": 30,
+          "step": 1,
+          "label": "Limit items",
+          "default": 5
+        },
+        {
+          "type": "range",
+          "id": "show",
+          "min": 1,
+          "max": 6,
+          "step": 1,
+          "label": "Display items",
+          "default": 3
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Advanded Blog"
+    }
+  ]
+}
+{% endschema %}

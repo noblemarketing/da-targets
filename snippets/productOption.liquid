@@ -1,0 +1,97 @@
+<!-- productOption.liquid -->
+
+{%- if product_selector == 'radio' -%}
+  {%- liquid
+    assign isColor = false
+    assign optionName = option.name | handleize
+    assign option_index = loop
+  -%}
+{%- if optionName contains 'colo' -%}
+{%- assign isColor = true -%}
+{%- endif -%}
+<fieldset class="single-option-radio {% if isColor %} single-color {{ size_color }} {% if color_circle %}roud-color{% endif %} {% endif %} "
+          name="{{ option.name | handleize }}"
+          id="ProductSelect-option-{{ firstloop }}">
+  
+  {%- for value in option.values -%}
+    {%- liquid
+      assign variant_label_state = true 
+      if product.options.size == 1 
+        unless product.variants[firstloop].available 
+        assign variant_label_state = false 
+        endunless 
+      endif 
+      for variant in product.variants
+        assign vOption = 'option' | append: option_index 
+        if value == variant[vOption] 
+        assign currenVariant = variant 
+        break 
+        endif 
+      endfor 
+      assign hasImage = false 
+      if isColor and currenVariant.image 
+      assign hasImage = true 
+      endif 
+    -%}
+    {%- capture da_ww_swatch_class -%}{% render 'da-warm-weather-swatch-class', product: product, value: value, is_color: isColor, option: option %}{%- endcapture -%}
+    {%- liquid
+      assign label_class = ''
+      if sw_color_product
+        assign label_class = 'st-color-' | append: value | handle | append: da_ww_swatch_class
+      elsif da_ww_swatch_class != blank
+        assign label_class = da_ww_swatch_class | strip
+      endif
+      unless variant_label_state
+        if label_class != blank
+          assign label_class = 'disabled ' | append: label_class
+        else
+          assign label_class = 'disabled'
+        endif
+      endunless
+    -%}
+
+  <input type="radio"
+        {% if option.selected_value == value -%} checked="checked"{%- endif %}
+        {% unless variant_label_state -%} disabled="disabled"{%- endunless %}
+         value="{{ value | escape }}"
+         data-index="option{{ option_index }}"
+         name="{{ option.name | handleize }}"
+         class="single-option-selector-{{ section.id }} single-option-selector__radio{% unless variant_label_state %} disabled{% endunless %}"
+         id="ProductSelect-option-{{ option.name | handleize }}-{{ value | escape }}">
+    <label
+      {%- if da_ww_swatch_class != blank -%}
+        title="{{ value | escape }} — DA recommends this color for warm-weather shooting"
+      {%- elsif hasImage -%}
+        title="{{ value | escape }}"
+      {%- endif -%}
+    {%- if sw_color_product -%}
+    {% comment %}
+    {% if currenVariant.metafields.color.swatch and optionName contains 'colo' %}
+      style="background-color: {{ currenVariant.metafields.color.swatch }}"
+    {% elsif currenVariant.metafields.image.swatch and optionName contains 'colo' %}
+      style="background-size: cover; background-image: url('{{ currenVariant.metafields.image.swatch | image_url: width: 64 }}')"
+    {% else %}
+      style="background-color:{{ value | escape }};"
+    {% endif %}
+  {% endcomment %}
+    {% if label_class != blank %} class="{{ label_class | strip }}"{% endif %}
+    style="background-color:{{ value | escape | handle }};"
+    {% else %}
+    {% if label_class != blank %} class="{{ label_class | strip }}"{% endif %}
+    style="background-image:url({{ currenVariant.image.src | image_url: width: 100 }})"
+    {% endif %}
+          for="ProductSelect-option-{{ option.name | handleize }}-{{ value | escape }}">
+      {%- unless hasImage -%}{{ value | escape }}{%- endunless -%}
+    </label>
+  {%- endfor -%}
+</fieldset>
+{%- else -%}
+<select class="single-option-selector single-option-selector-{{ section.id }} product-form__input"
+        id="SingleOptionSelector-{{ firstloop }}"
+        data-name="{{ option.name }}"
+        data-index="option{{ loop }}">
+  {%- for value in option.values -%}
+  <option value="{{ value | escape }}"{% if option.selected_value == value %} selected="selected"{% endif %}>{{ value }}</option>
+  {%- endfor -%}
+</select>
+{%- endif -%}

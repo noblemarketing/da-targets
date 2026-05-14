@@ -1,0 +1,175 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {}
+    },
+    "image_content_6_BEyqBR": {
+      "type": "image-content-6",
+      "blocks": {
+        "image_block_fP9GtC": {
+          "type": "image_block",
+          "settings": {
+            "w_image": 39,
+            "pos_image": 54,
+            "e_image": "left",
+            "image": "shopify://shop_images/DA_Desert_web-40.jpg",
+            "image2": "shopify://shop_images/card-silhouette.webp",
+            "enable_video": false,
+            "text_circle": "Fashion2 style store",
+            "video_url": ""
+          }
+        },
+        "text_block_gqbJmn": {
+          "type": "text_block",
+          "settings": {
+            "bgtext": "#ffffff",
+            "subtitle": "Next-Generation Targets Built to Sell",
+            "title": "Retail & Distribution",
+            "size_text": "h2",
+            "text": "<p>DA Targets brings military-grade performance to the civilian market with patented self-healing, color-changing polymer targets that are reshaping the shooting experience. Designed for high-volume use and repeat buyers, these American-made targets eliminate common pain points—no tape, no replacement, no ricochets—and keep customers coming back for more.</p>",
+            "answer_content": "",
+            "enable_video": false,
+            "video_des": "",
+            "video_url": "",
+            "button": "view digital brochure",
+            "link": "https://drive.google.com/file/d/17U5bcYdvFnvgu0P-JuJCihG8t1pNWb_A/view?usp=drive_link",
+            "align": "left"
+          }
+        }
+      },
+      "block_order": [
+        "image_block_fP9GtC",
+        "text_block_gqbJmn"
+      ],
+      "name": "Image (Video) with text",
+      "settings": {
+        "animation": "",
+        "setwidth": "container",
+        "bgsection": "#ffffff",
+        "size": "50-50",
+        "enable_padding": true,
+        "align_center": true,
+        "paddingsection": "0px 0px 0px 0px",
+        "paddingmobile": "40px 0px 40px 0px",
+        "marginsection": "0px 0px 0px 0px",
+        "marginmobile": "0px 0px 0px 0px"
+      }
+    },
+    "empty_space_iyAFDD": {
+      "type": "empty-space",
+      "name": "t:sections.empty-space.presets.name",
+      "settings": {
+        "desktop_height": 200,
+        "mobile_height": 200,
+        "color_background": "",
+        "gradient_background": ""
+      }
+    },
+    "image_with_text_HxGmVK": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_7QMy4n": {
+          "type": "heading",
+          "settings": {
+            "heading": "",
+            "heading_size": "title-md",
+            "heading_tag": "h2",
+            "highlighted_text": "none",
+            "highlighted_scribble": "circle"
+          }
+        },
+        "text_FpU6je": {
+          "type": "text",
+          "settings": {
+            "text": "",
+            "text_size": "subtext-md",
+            "text_max_size": 32,
+            "text_font": "body",
+            "secondary_color": false,
+            "highlighted_text": "none",
+            "highlighted_scribble": "circle"
+          }
+        },
+        "button_zc8X4c": {
+          "type": "button",
+          "settings": {
+            "button_label": "",
+            "button_link": "",
+            "button_style": "primary",
+            "button_size": "md",
+            "button_external": false,
+            "button_icon": true
+          }
+        }
+      },
+      "block_order": [
+        "heading_7QMy4n",
+        "text_FpU6je",
+        "button_zc8X4c"
+      ],
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "image_height": "650px",
+        "image_width": "medium",
+        "layout": "image_first",
+        "text_alignment": "left",
+        "content_position": "align-self-center",
+        "image_height_mobile": "auto",
+        "text_alignment_mobile": "left",
+        "color_text": "",
+        "color_background": "",
+        "gradient_background": "",
+        "color_background_2": "",
+        "gradient_background_2": "",
+        "color_highlight": "",
+        "gradient_highlight": "",
+        "color_button_text": "",
+        "color_button_background": "",
+        "color_button_gradient": "",
+        "padding_top": 72,
+        "padding_bottom": 72,
+        "divider": false,
+        "full_width": false,
+        "rounded": false,
+        "enable_parallax": true,
+        "parallax_direction": "vertical"
+      }
+    },
+    "custom_liquid_yEiTfd": {
+      "type": "custom-liquid",
+      "name": "t:sections.custom-liquid.presets.name",
+      "settings": {
+        "liquid": "<br>\n<br>\n<br>\n<br>",
+        "color_text": "",
+        "color_background": "",
+        "gradient_background": "",
+        "color_button_text": "",
+        "color_button_background": "",
+        "color_button_gradient": "",
+        "padding_top": 72,
+        "padding_bottom": 72,
+        "divider": false,
+        "narrow": false,
+        "rounded": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "image_content_6_BEyqBR",
+    "empty_space_iyAFDD",
+    "image_with_text_HxGmVK",
+    "custom_liquid_yEiTfd"
+  ]
+}

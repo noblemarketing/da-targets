@@ -1,0 +1,750 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "product-template-1",
+      "blocks": {
+        "989bce2f-7961-4267-8e6c-40ff4bb0ed64": {
+          "type": "title",
+          "settings": {
+            "e_label": true
+          }
+        },
+        "c5c11045-e3b5-47e4-80d1-25e86ec844cc": {
+          "type": "price",
+          "settings": {}
+        },
+        "judge_me_reviews_preview_badge_mwBbkD": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
+        "1affb493-1e14-4893-9876-be8d348ee475": {
+          "type": "shortdesc",
+          "settings": {}
+        },
+        "ff32ea77-bcea-43d3-8e38-55894c9d938a": {
+          "type": "separator",
+          "settings": {}
+        },
+        "globo_product_options_app_block_NDHB6f": {
+          "type": "shopify://apps/globo-product-options/blocks/app-block/fdc9fad5-1a0f-4bd4-9c8a-1af6a6eef6b8",
+          "disabled": true,
+          "settings": {}
+        },
+        "8288910a-1ad6-47df-b127-118bc1d2ce24": {
+          "type": "buttons",
+          "settings": {
+            "enable_local_pickup": true,
+            "enable_hurrify": true,
+            "enable_payment_button": true,
+            "waitlist": true,
+            "product_selector": "radio",
+            "sw_color_product": true,
+            "color_circle": true,
+            "size_color": "small-38"
+          }
+        },
+        "salepoint_grid_FCeGkR": {
+          "type": "salepoint_grid",
+          "settings": {
+            "item1_icon": "checkmark",
+            "item1_text": "Patented Color Change Technology",
+            "item2_icon": "shield",
+            "item2_text": "Ricochet Free - Shoot Close Range",
+            "item3_icon": "ribbon",
+            "item3_text": "Military Grade - 10k+ rounds",
+            "item4_icon": "globe",
+            "item4_text": "Made in the USA"
+          }
+        },
+        "bf089f50-667c-4417-a84a-9478625741a1": {
+          "type": "list-info",
+          "disabled": true,
+          "settings": {
+            "product_vendor_enable": true,
+            "product_type_enable": true,
+            "variant_sku_enable": true,
+            "variant_available_enable": false
+          }
+        },
+        "11f6643a-6bb6-4db9-a512-9c0eefc8c3b8": {
+          "type": "countdown",
+          "settings": {
+            "title_heading": "🔥 Sale ends in !"
+          }
+        },
+        "1431e891-e819-4fa1-8416-0cb3956f0e39": {
+          "type": "description",
+          "disabled": true,
+          "settings": {
+            "enable_tab": true,
+            "title_tab": "Description"
+          }
+        },
+        "2830007b-b9f5-4f33-86cf-680e0a91ca8d": {
+          "type": "tabcustom",
+          "disabled": true,
+          "settings": {
+            "title_tab": "Shipping information",
+            "icon": "none",
+            "answer_content": "<p>- No EU import duties.<br/>- Ships within 1-2 business days.<br/>- Ships in our fully recyclable and biodegradable signature boxes.</p>",
+            "page": ""
+          }
+        },
+        "0a71f30d-dba2-4bca-a64d-c3cc2ed17e7d": {
+          "type": "tabcustom",
+          "disabled": true,
+          "settings": {
+            "title_tab": "Care Guide",
+            "icon": "none",
+            "answer_content": "<p>Regular<em>care</em>. Use a slightly damp, soft and lint-free cloth for regular dust removal. Always clean in the direction of the grain.</p>",
+            "page": ""
+          }
+        },
+        "9cd2d8a0-a8b4-46d7-b3a7-b1609af99285": {
+          "type": "fakeviewer",
+          "disabled": true,
+          "settings": {
+            "fake_view_min": 10,
+            "fake_view_max": 25,
+            "fake_view_duration": 6,
+            "fake_view_text_prefix": "",
+            "fake_view_text_suffix": "customers are viewing this product"
+          }
+        },
+        "2cf20ef7-ba29-4dd5-8c98-df0b96ba3c5b": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "🔥  30 sold in last 18 hours",
+            "text_style": "body"
+          }
+        },
+        "1be7473b-00b2-4ad9-a7c0-356b86de67a7": {
+          "type": "shipping",
+          "settings": {}
+        },
+        "83a6f5b6-88e4-4eb3-9899-a085ea9c58bd": {
+          "type": "shippingtime",
+          "settings": {
+            "shipping_button": "Delivery information",
+            "page_shipping": "delivery-service"
+          }
+        },
+        "2d534ed0-517d-48ca-8370-8659965f32c4": {
+          "type": "share",
+          "settings": {}
+        },
+        "a405ef88-bdbe-486d-9fb3-6c91aa4e1509": {
+          "type": "tabfix",
+          "disabled": true,
+          "settings": {
+            "enable_tabvertical": false,
+            "gtab_des": "Description",
+            "gtab_review_enable": true,
+            "gtab_review": "Review",
+            "stab_title1": "Tab 1",
+            "stab_content1": "<p>111</p>",
+            "stab_title2": "",
+            "stab_content2": "",
+            "stab_title3": "",
+            "stab_content3": "",
+            "stab_title4": "",
+            "stab_content4": ""
+          }
+        },
+        "51f9d856-95f4-4741-bf4d-afe15438ff29": {
+          "type": "related-product",
+          "disabled": true,
+          "settings": {
+            "title_heading": "Related products",
+            "product_list": [
+              "5-11-tactical-sigurd-long-sleeve-shirt",
+              "arc-teryx-leaf-combat-knee-cap"
+            ]
+          }
+        },
+        "883720d7-3346-4495-85a0-add8b3d7a51f": {
+          "type": "trust-badge",
+          "settings": {
+            "trust-heading": "Guarantee safe checkout",
+            "width_image": 40
+          }
+        }
+      },
+      "block_order": [
+        "989bce2f-7961-4267-8e6c-40ff4bb0ed64",
+        "c5c11045-e3b5-47e4-80d1-25e86ec844cc",
+        "judge_me_reviews_preview_badge_mwBbkD",
+        "1affb493-1e14-4893-9876-be8d348ee475",
+        "ff32ea77-bcea-43d3-8e38-55894c9d938a",
+        "globo_product_options_app_block_NDHB6f",
+        "8288910a-1ad6-47df-b127-118bc1d2ce24",
+        "salepoint_grid_FCeGkR",
+        "bf089f50-667c-4417-a84a-9478625741a1",
+        "11f6643a-6bb6-4db9-a512-9c0eefc8c3b8",
+        "1431e891-e819-4fa1-8416-0cb3956f0e39",
+        "2830007b-b9f5-4f33-86cf-680e0a91ca8d",
+        "0a71f30d-dba2-4bca-a64d-c3cc2ed17e7d",
+        "9cd2d8a0-a8b4-46d7-b3a7-b1609af99285",
+        "2cf20ef7-ba29-4dd5-8c98-df0b96ba3c5b",
+        "1be7473b-00b2-4ad9-a7c0-356b86de67a7",
+        "83a6f5b6-88e4-4eb3-9899-a085ea9c58bd",
+        "2d534ed0-517d-48ca-8370-8659965f32c4",
+        "a405ef88-bdbe-486d-9fb3-6c91aa4e1509",
+        "51f9d856-95f4-4741-bf4d-afe15438ff29",
+        "883720d7-3346-4495-85a0-add8b3d7a51f"
+      ],
+      "settings": {
+        "setwidth": "container",
+        "media_style": "media-bottom",
+        "media_size": "normal",
+        "image_size": "square",
+        "enable_video_looping": true,
+        "stock_enable": true,
+        "sizeguide_enable": true,
+        "sizeguide_title": "Size Guide",
+        "sizeguide_page": "size-guide",
+        "crosssell_title": "Cross selling",
+        "upsell_accept": "Add to cart",
+        "upsell_decline": "No, thanks",
+        "upsell_time": 3,
+        "enable": false,
+        "mix_1": "#262626",
+        "mix_2": "#ffffff",
+        "text_cl": "#ffffff",
+        "cart_bg": "#ffffff",
+        "cart_cl": "#000000",
+        "cart_cl_hover": "#ffffff"
+      }
+    },
+    "product-requently": {
+      "type": "product-bundle",
+      "disabled": true,
+      "settings": {
+        "animation": "fade-up",
+        "bgsection": "#ffffff",
+        "bundle_title": "Frequently Bought Together",
+        "size_text": "h4",
+        "limit_bundle": 2,
+        "enable_border": true,
+        "btn_add": "Add selected items",
+        "paddingsection": "40px 0px 40px 0px",
+        "paddingmobile": "40px 0px 40px 0px",
+        "marginsection": "0px 0px 0px 0px",
+        "marginmobile": "0px 0px 0px 0px"
+      }
+    },
+    "product-content": {
+      "type": "product-content",
+      "blocks": {
+        "6889c9ba-caef-4edd-9757-6711505cb095": {
+          "type": "description",
+          "settings": {
+            "title_tab": "Description"
+          }
+        },
+        "b69a53cf-5bc1-4b18-add3-92af436f966c": {
+          "type": "content",
+          "settings": {
+            "title_tab": "Specifications",
+            "answer_content": "{{ product.metafields.custom.specifications | metafield_tag }}",
+            "page": "material"
+          }
+        },
+        "2e69c5c0-ab83-4cda-9c38-1aaab6fdf1cc": {
+          "type": "related-product",
+          "settings": {
+            "title_heading": "Frequently Bought Together",
+            "product_list": "{{ product.metafields[\"shopify--discovery--product_recommendation\"].complementary_products.value }}"
+          }
+        },
+        "judge_me_reviews_review_widget_QfKmwM": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "6889c9ba-caef-4edd-9757-6711505cb095",
+        "b69a53cf-5bc1-4b18-add3-92af436f966c",
+        "2e69c5c0-ab83-4cda-9c38-1aaab6fdf1cc",
+        "judge_me_reviews_review_widget_QfKmwM"
+      ],
+      "settings": {
+        "paddingsection": "48px 0px 40px 0px",
+        "paddingmobile": "32px 0px 32px 0px",
+        "marginsection": "0px 0px 0px 0px",
+        "marginmobile": "0px 0px 0px 0px",
+        "animation": "fade-up",
+        "tab_size": "large",
+        "enable_left": true
+      }
+    },
+    "1e04ea1d-fcaa-48a4-9b36-62344d508849": {
+      "type": "parallax-banner",
+      "blocks": {
+        "83897ed0-76f5-408a-bfaf-429b0c45b4c5": {
+          "type": "sub_title",
+          "settings": {
+            "subtitle": "KEINE MASSENWARE"
+          }
+        },
+        "30314b3c-e1a1-468e-b2d5-399f32e2bbda": {
+          "type": "heading",
+          "settings": {
+            "title": "Hand picked brands <br>from California",
+            "size_text": "h2"
+          }
+        },
+        "dd148053-296c-4c9b-99a6-63c2328328fe": {
+          "type": "paragraph",
+          "settings": {
+            "subtext": "<p class=\"col-lg-7 col-12 mx-auto\">We refined our collections, hand picking our brands, buying deep in the styles we love, slowly evolving into a perfectly balanced store offering the ideal fit for every woman.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "83897ed0-76f5-408a-bfaf-429b0c45b4c5",
+        "30314b3c-e1a1-468e-b2d5-399f32e2bbda",
+        "dd148053-296c-4c9b-99a6-63c2328328fe"
+      ],
+      "disabled": true,
+      "settings": {
+        "animation": "fade",
+        "setwidth": "full",
+        "bgsection": "#ffffff",
+        "parrallax_enable": false,
+        "image": "shopify://shop_images/da-hero.webp",
+        "height_section": "550",
+        "height_section_mobile": "450",
+        "align": "center",
+        "position_text": "mid-center",
+        "bg_box": "#ffffff",
+        "opacity_bgbox": 0,
+        "title_color": "#ffffff",
+        "color_textbody": "#ffffff",
+        "bg_overlay": "#000000",
+        "gradient_bg": "",
+        "opacity_bg_overlay": 0.5,
+        "paddingsection": "0px 0px 0px 0px",
+        "paddingmobile": "40px 0px 40px 0px",
+        "marginsection": "0px 0px 0px 0px",
+        "marginmobile": "0px 0px 0px 0px"
+      }
+    },
+    "30d4e0bd-da81-4442-b71d-c0fd1f5b3906": {
+      "type": "image-content-6",
+      "blocks": {
+        "template--14654207721557__30d4e0bd-da81-4442-b71d-c0fd1f5b3906-16658225273f87a081-0": {
+          "type": "image_block",
+          "settings": {
+            "w_image": 35,
+            "pos_image": 80,
+            "e_image": "right",
+            "enable_video": true,
+            "text_circle": "Play Play Play Play Play Play",
+            "video_url": "https://youtu.be/4cGvDakBMHk"
+          }
+        },
+        "template--14654207721557__30d4e0bd-da81-4442-b71d-c0fd1f5b3906-16658225273f87a081-1": {
+          "type": "text_block",
+          "settings": {
+            "bgtext": "#ffffff",
+            "subtitle": "MATCH COLORS",
+            "title": "Hyper Wearable  Fashion",
+            "size_text": "h2",
+            "text": "",
+            "answer_content": "<p>Pair large text with an image to give focus to your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "enable_video": false,
+            "video_des": "",
+            "video_url": "",
+            "button": "discover now",
+            "link": "",
+            "align": "left"
+          }
+        }
+      },
+      "block_order": [
+        "template--14654207721557__30d4e0bd-da81-4442-b71d-c0fd1f5b3906-16658225273f87a081-0",
+        "template--14654207721557__30d4e0bd-da81-4442-b71d-c0fd1f5b3906-16658225273f87a081-1"
+      ],
+      "disabled": true,
+      "settings": {
+        "animation": "fade-up",
+        "setwidth": "container",
+        "bgsection": "#ffffff",
+        "size": "50-50",
+        "enable_padding": true,
+        "align_center": true,
+        "paddingsection": "100px 0px 100px 0px",
+        "paddingmobile": "48px 0px 48x 0px",
+        "marginsection": "0px 0px 0px 0px",
+        "marginmobile": "0px 0px 0px 0px"
+      }
+    },
+    "c5690cdb-c04d-45fd-9c6c-cfee011363ca": {
+      "type": "service",
+      "blocks": {
+        "template--14684877652053__c5690cdb-c04d-45fd-9c6c-cfee011363ca-166585292003960893-0": {
+          "type": "service",
+          "settings": {
+            "bgblock": "rgba(0,0,0,0)",
+            "title": "Fast Free Shipping",
+            "description": "Get free shipping on all orders!",
+            "icon": "<i class=\"icon-package\"></i>"
+          }
+        },
+        "template--14684877652053__c5690cdb-c04d-45fd-9c6c-cfee011363ca-166585292003960893-1": {
+          "type": "service",
+          "settings": {
+            "bgblock": "rgba(0,0,0,0)",
+            "title": "Patented Designs",
+            "description": "Innovative materials create the safest targets in the industry",
+            "icon": "<i class=\"icon-trophy\"></i>"
+          }
+        },
+        "template--14684877652053__c5690cdb-c04d-45fd-9c6c-cfee011363ca-166585292003960893-2": {
+          "type": "service",
+          "settings": {
+            "bgblock": "rgba(0,0,0,0)",
+            "title": "Made in the USA",
+            "description": "Crafted by hard working Americans",
+            "icon": "<i class=\"icon-star-alt\"></i>"
+          }
+        },
+        "4273663e-a3ea-49a8-a7c1-c872309fc99c": {
+          "type": "service",
+          "settings": {
+            "bgblock": "rgba(0,0,0,0)",
+            "title": "Secure payments",
+            "description": "Your payment information is processed securely",
+            "icon": "<i class=\"icon-bag\"></i>"
+          }
+        }
+      },
+      "block_order": [
+        "template--14684877652053__c5690cdb-c04d-45fd-9c6c-cfee011363ca-166585292003960893-0",
+        "template--14684877652053__c5690cdb-c04d-45fd-9c6c-cfee011363ca-166585292003960893-1",
+        "template--14684877652053__c5690cdb-c04d-45fd-9c6c-cfee011363ca-166585292003960893-2",
+        "4273663e-a3ea-49a8-a7c1-c872309fc99c"
+      ],
+      "settings": {
+        "animation": "fade-up",
+        "setwidth": "container",
+        "bgsection": "#f5f5f5",
+        "title_top": "",
+        "title": "",
+        "title_sp": "Service",
+        "des": "",
+        "align-heading": "center",
+        "no_gutter": false,
+        "paddingbox": "0px 0px 0px 0px",
+        "paddingbox_xl": "0px 0px 0px 0px",
+        "paddingbox_mobile": "0px 0px 0px 0px",
+        "bg_box": "#f5f5f5",
+        "iconcolor": "#222222",
+        "titlecolor": "#222222",
+        "subcolor": "#999999",
+        "size": 60,
+        "service_heading": "h5",
+        "layout": "style-2",
+        "enable_carousel": false,
+        "arrows": false,
+        "draggable": true,
+        "dots": true,
+        "infinite": true,
+        "paddingsection": "0px 0px 0px 0px",
+        "paddingmobile": "32px 0px 16px 0px",
+        "marginsection": "0px 0px 0px 0px",
+        "marginmobile": "0px 0px 0px 0px"
+      }
+    },
+    "70b7f2d2-4c12-4305-88bd-da89e2d18d5b": {
+      "type": "quotes-special",
+      "blocks": {
+        "template--14684877652053__70b7f2d2-4c12-4305-88bd-da89e2d18d5b-1665853262e19e6bf8-0": {
+          "type": "quote",
+          "settings": {
+            "title": "Wonderful !",
+            "quote": "<h4>“Absolutely loved it. The fit, the quality and the color. This is a slim fit jean like none other and the only one I will buy.”</h4>",
+            "rate": 5,
+            "author": "— Susan P.",
+            "info": ""
+          }
+        },
+        "template--14684877652053__70b7f2d2-4c12-4305-88bd-da89e2d18d5b-1665853262e19e6bf8-1": {
+          "type": "quote",
+          "settings": {
+            "title": "perfect !",
+            "quote": "<h4>“ The most comfortable shoes ever!! I have them in 3 colors. And I am not done. \"</h4>",
+            "rate": 5,
+            "author": "—  Jaycie Glove",
+            "info": ""
+          }
+        },
+        "template--14684877652053__70b7f2d2-4c12-4305-88bd-da89e2d18d5b-1665853262e19e6bf8-2": {
+          "type": "quote",
+          "settings": {
+            "title": "Awesome",
+            "quote": "<h4>\" I love Lola! They're one of my favorite brands. Customer service is excellent. I have only returned items once and it was so easy. \" </h4>",
+            "rate": 5,
+            "author": "—  Kai Felix",
+            "info": ""
+          }
+        }
+      },
+      "block_order": [
+        "template--14684877652053__70b7f2d2-4c12-4305-88bd-da89e2d18d5b-1665853262e19e6bf8-0",
+        "template--14684877652053__70b7f2d2-4c12-4305-88bd-da89e2d18d5b-1665853262e19e6bf8-1",
+        "template--14684877652053__70b7f2d2-4c12-4305-88bd-da89e2d18d5b-1665853262e19e6bf8-2"
+      ],
+      "disabled": true,
+      "settings": {
+        "animation": "fade-up",
+        "setwidth": "container",
+        "bgsection": "#ffffff",
+        "title_top": "",
+        "title": "",
+        "des": "",
+        "align-heading": "center",
+        "color_rate": "#f1f1f1",
+        "color_rated": "#000000",
+        "arrows": true,
+        "draggable": true,
+        "dots": false,
+        "infinite": true,
+        "paddingsection": "100px 0px 100px 0px",
+        "paddingmobile": "40px 0px 40px 0px",
+        "marginsection": "0px 0px 0px 0px",
+        "marginmobile": "0px 0px 0px 0px"
+      }
+    },
+    "f9d11058-e5e4-4a6a-8134-4c101e672497": {
+      "type": "backgroundvideo",
+      "blocks": {
+        "2352b9c6-39ce-4ee2-809b-797a7430f4d9": {
+          "type": "paragraph",
+          "settings": {
+            "subtext": "★★★★★ 500+ Reviews"
+          }
+        },
+        "68824fd8-5645-4fc3-9b30-ba506d567226": {
+          "type": "heading",
+          "settings": {
+            "title": "Military Grade Shooting Targets",
+            "size_text": "h1"
+          }
+        },
+        "32234901-bf48-4736-bf33-224a93b7b36b": {
+          "type": "paragraph",
+          "settings": {
+            "subtext": "It's just better at the range with DA Targets"
+          }
+        }
+      },
+      "block_order": [
+        "2352b9c6-39ce-4ee2-809b-797a7430f4d9",
+        "68824fd8-5645-4fc3-9b30-ba506d567226",
+        "32234901-bf48-4736-bf33-224a93b7b36b"
+      ],
+      "settings": {
+        "animation": "",
+        "setwidth": "full",
+        "height_section": "550px",
+        "height_section_mobile": "450px",
+        "align": "center",
+        "position_text": "mid-center",
+        "link_video": "https://cdn.shopify.com/videos/c/o/v/08f455a52f8441c9b829641af7d3aea9.mp4",
+        "bgsection": "#ffffff",
+        "bg_overlay": "#000000",
+        "gradient_bg": "",
+        "opacity_bg_overlay": 0.5,
+        "title_color": "#ffffff",
+        "bg_box": "#ffffff",
+        "opacity_bgbox": 0,
+        "marginsection": "0px 0px 0px 0px",
+        "marginmobile": "0px 0px 0px 0px"
+      }
+    },
+    "bcb1cba3-80fc-49a2-a033-40cf0618e9c8": {
+      "type": "faq-accordion",
+      "blocks": {
+        "template--14684877652053__bcb1cba3-80fc-49a2-a033-40cf0618e9c8-16659371170e440ef7-0": {
+          "type": "faq",
+          "settings": {
+            "faq_title": "What calibers are these rated for?",
+            "faq_des": "<p>The rated calibers for the target start from a minimum of .22 caliber and go up. We have tested it successfully with a .54 caliber 425 grain muzzle loader round, proving its durability against larger ammunition. Avoid hollow points, wadcutters, and flat nose projectiles, as these can do permanent damage to the target.</p>"
+          }
+        },
+        "template--14684877652053__bcb1cba3-80fc-49a2-a033-40cf0618e9c8-16659371170e440ef7-1": {
+          "type": "faq",
+          "settings": {
+            "faq_title": "How long will they last?",
+            "faq_des": "<p>We have successfully shot over 1,000 rounds of 9mm through a 6” gong and the target still has life left in it. These targets are designed to maintain their shape and integrity through hundreds/thousands of rounds, depending on the size of the target and calibers being used.  Additionally, the color change feature will last the entire life of the target, provided they are stored properly.</p>"
+          }
+        },
+        "template--14684877652053__bcb1cba3-80fc-49a2-a033-40cf0618e9c8-16659371170e440ef7-2": {
+          "type": "faq",
+          "settings": {
+            "faq_title": "How do you recommend storing them?",
+            "faq_des": "<p>Due to its sensitivity to UV light, the material is prone to color fading. We recommend removing it from UV light exposure when not in use and storing it indoors, away from any UV light sources. However, even if the color of the target becomes faded, the self-healing and color changing features will not be affected.</p>"
+          }
+        },
+        "faq_VKmByk": {
+          "type": "faq",
+          "settings": {
+            "faq_title": "What does temperature change mean?",
+            "faq_des": "<p>Our patented heat activated material captures the energy and heat from the bullet and temporarily changes the color of the target at the point of impact. For the best color change effect, we recommend selecting the appropriate temperature range for the climate you primarily shoot in.  Remember, the target itself needs to be in that range as well. Meaning, the material of the target needs to be the same as the ambient temperature you are shooting in. Example, do not leave the target in the car on a cool night then take it into an indoor range that has an ambient temperature of 70 degrees and the temperature of the material is 30 degrees.  If you are out of the temperature range, it will not hurt the target and you will still get the reactiveness but not the color change.</p>"
+          }
+        },
+        "faq_jApdT4": {
+          "type": "faq",
+          "settings": {
+            "faq_title": "What is the best way to mount them?",
+            "faq_des": "<p>We suggest attaching the target's strap to a standard 2x4 using a few staples or a wood screw. Ensure that the targets are allowed to swing freely and avoid mounting them against a hard backstop, as this could permanently damage the color change effect.</p>"
+          }
+        },
+        "faq_xLcpax": {
+          "type": "faq",
+          "settings": {
+            "faq_title": "What are the safety requirements?",
+            "faq_des": "<p>The entire DA product line is designed to allow all projectiles (traveling over 1000FPS) to pass through the target. Our targets should NOT be used with BB guns or airsoft guns, as the projectile will not penetrate the target and will ricochet. Our targets will not stop projectiles or alter their point of impact in any way, so as always, be aware of your surroundings. Make sure there is an adequate back drop/berm to stop projectiles, and never shoot without proper eye and ear protection. Be sure to check range rules or with a range official before using DA Targets.</p><p>We accept that once a DA Target reaches the end user, we can no longer control how it is used. We do not accept any liability resulting in improper use of our products, or modification of DA Targets. The end user assumes all risk of injury to oneself or others, as well as damage to any and all property when using DA Targets.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "template--14684877652053__bcb1cba3-80fc-49a2-a033-40cf0618e9c8-16659371170e440ef7-0",
+        "template--14684877652053__bcb1cba3-80fc-49a2-a033-40cf0618e9c8-16659371170e440ef7-1",
+        "template--14684877652053__bcb1cba3-80fc-49a2-a033-40cf0618e9c8-16659371170e440ef7-2",
+        "faq_VKmByk",
+        "faq_jApdT4",
+        "faq_xLcpax"
+      ],
+      "settings": {
+        "animation": "",
+        "setwidth": "container",
+        "bgsection": "#ffffff",
+        "border_faq": "#ebebeb",
+        "e_size": "auto",
+        "e_repeat": "no-repeat",
+        "e_pos": "center center",
+        "title_top": "",
+        "title": "FAQs",
+        "des": "Have a question our shooting targets ? We are here to help.",
+        "align-heading": "center",
+        "title_size": "h5",
+        "e_first_open": false,
+        "e_reverse": true,
+        "e_small": true,
+        "left_html": "",
+        "e_right": false,
+        "paddingsection": "100px 0px 100px 0px",
+        "paddingmobile": "60px 0px 60px 0px",
+        "marginsection": "0px 0px 0px 0px",
+        "marginmobile": "0px 0px 0px 0px"
+      }
+    },
+    "2882975a-3f6b-438d-9a02-bfeacf954e1a": {
+      "type": "count-down",
+      "disabled": true,
+      "settings": {
+        "animation": "fade-up",
+        "setwidth": "container",
+        "bgsection": "#000000",
+        "gradient_bg": "",
+        "bg_full": false,
+        "enable_padding": true,
+        "color": "#ffffff",
+        "e_blur": true,
+        "overlay": "#081625",
+        "opacity": 0.5,
+        "title": "Sale Event",
+        "size_text": "h3",
+        "des": "We've refreshed our sale with discounts of up to 50% on select styles.",
+        "data_countdown": "2025-05-11T00:00:00",
+        "e_button": true,
+        "txt_button": "Shop Collection",
+        "link_button": "",
+        "style_btn": "btn-outline btn-outline-white",
+        "paddingsection": "32px 0px 32px 0px",
+        "paddingmobile": "60px 0px 60px 0px",
+        "marginsection": "0px 0px 0px 0px",
+        "marginmobile": "0px 0px 0px 0px"
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "disabled": true,
+      "settings": {
+        "animation": "",
+        "setwidth": "container-fluid",
+        "heading": "You may also like",
+        "heading_size": "h3",
+        "heading_align": "center",
+        "products_to_show": 4,
+        "products_per_row": "4",
+        "padding_top": 80,
+        "padding_bottom": 32
+      }
+    },
+    "be561305-5bee-4018-a668-c8770086ba5b": {
+      "type": "line",
+      "disabled": true,
+      "settings": {
+        "animation": "",
+        "paddingsection": "0px 0px 0px 0px",
+        "marginsection": "0px 0px 0px 0px",
+        "bgsection": "#ffffff",
+        "setwidth": "container",
+        "bgborder": "#dddddd",
+        "wborder": "1px"
+      }
+    },
+    "product-recent": {
+      "type": "recently-viewed",
+      "disabled": true,
+      "settings": {
+        "enable": true,
+        "animation": "fade-up",
+        "setwidth": "container",
+        "title_top": "",
+        "title": "Recently viewed",
+        "des": "",
+        "align-heading": "center",
+        "limit": 6,
+        "paddingsection": "0px 0px 60px 0px",
+        "paddingmobile": "40px 0px 40px 0px",
+        "marginsection": "0px 0px 0px 0px",
+        "marginmobile": "0px 0px 0px 0px"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "product-requently",
+    "product-content",
+    "1e04ea1d-fcaa-48a4-9b36-62344d508849",
+    "30d4e0bd-da81-4442-b71d-c0fd1f5b3906",
+    "c5690cdb-c04d-45fd-9c6c-cfee011363ca",
+    "70b7f2d2-4c12-4305-88bd-da89e2d18d5b",
+    "f9d11058-e5e4-4a6a-8134-4c101e672497",
+    "bcb1cba3-80fc-49a2-a033-40cf0618e9c8",
+    "2882975a-3f6b-438d-9a02-bfeacf954e1a",
+    "product-recommendations",
+    "be561305-5bee-4018-a668-c8770086ba5b",
+    "product-recent"
+  ]
+}

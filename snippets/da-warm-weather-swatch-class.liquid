@@ -1,0 +1,39 @@
+{%- comment -%}
+  Appends CSS classes:
+  1) da-warm-weather-target — color option when product has tag warm-weather-pick and metafield info.warm_weather_option matches (case-insensitive).
+  2) da-pdp-warm-temp-option — temperature-style option (Temperature, Temperature Range, Environment, etc.) and value starts with "Warm Weather" (e.g. Warm Weather (60–100°F)).
+  Pass `option` from the parent snippet when available.
+{%- endcomment -%}
+{%- liquid
+  assign out = ''
+  assign da_warm_raw = product.metafields.info.warm_weather_option.value | default: product.metafields.info.warm_weather_option
+  assign da_warm_lower = da_warm_raw | strip | downcase
+  assign val_lower = value | strip | downcase
+  if is_color and product.tags contains 'warm-weather-pick' and da_warm_lower != blank and val_lower == da_warm_lower
+    assign out = ' da-warm-weather-target'
+  endif
+
+  assign opt_name_lower = ''
+  if option != blank
+    assign opt_name_lower = option.name | strip | downcase
+  endif
+  assign is_temp_option = false
+  if opt_name_lower == 'temperature' or opt_name_lower == 'temperature range' or opt_name_lower == 'environment' or opt_name_lower == 'envionment'
+    assign is_temp_option = true
+  endif
+  assign warm_prefix = val_lower | slice: 0, 12
+  assign is_warm_value = false
+  if val_lower == 'warm weather'
+    assign is_warm_value = true
+  elsif warm_prefix == 'warm weather'
+    assign is_warm_value = true
+  endif
+  if is_temp_option and is_warm_value
+    if out != ''
+      assign out = out | append: ' da-pdp-warm-temp-option'
+    else
+      assign out = ' da-pdp-warm-temp-option'
+    endif
+  endif
+  echo out
+-%}

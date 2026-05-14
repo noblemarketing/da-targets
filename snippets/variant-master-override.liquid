@@ -1,0 +1,174 @@
+{%- comment -%}
+  Master Variant Override System
+  
+  Usage:
+  {% render 'variant-master-override', option: option, value: value, product: product, type: 'label' %}
+  {% render 'variant-master-override', option: option, value: value, product: product, type: 'label', format: 'text' %}
+  
+  Parameters:
+  - format: 'html' (default) or 'text' (strips HTML for attributes)
+  
+  Priority Order:
+  1. Product Metafields (highest priority)
+  2. Special hardcoded labels (Type)
+  3. Locale Translations
+  4. Product-specific overrides
+  5. Default hardcoded labels
+  6. Original Shopify value (fallback)
+{%- endcomment -%}
+
+{%- liquid
+  if type == 'label'
+    assign final_label = option.name
+    
+    # 1. Check metafields first (highest priority)
+    assign option_key = option.name | downcase | replace: ' ', '_' | append: '_label'
+    if product.metafields.custom.variant_labels[option_key] != blank
+      assign final_label = product.metafields.custom.variant_labels[option_key]
+    else
+      case option.name | downcase
+        when 'color'
+          if product.metafields.custom.color_label != blank
+            assign final_label = product.metafields.custom.color_label
+          endif
+        when 'size'
+          if product.metafields.custom.size_label != blank
+            assign final_label = product.metafields.custom.size_label
+          endif
+        when 'material'
+          if product.metafields.custom.material_label != blank
+            assign final_label = product.metafields.custom.material_label
+          endif
+      endcase
+    endif
+    
+    # 2. Special hardcoded labels (like Type with line breaks) - takes priority over locale
+    if final_label == option.name
+      case option.name
+        when 'Type'
+          capture final_label
+            echo 'Select your shooting temperature for the best color change.'
+            echo '<br>'
+            echo 'Our targets perform in all conditions'
+          endcapture
+      endcase
+    endif
+    
+    # 3. Check locale translations if no metafield or special case
+    if final_label == option.name
+      assign option_locale_key = option.name | downcase | replace: ' ', '_'
+      assign locale_key = 'products.variant_labels.' | append: option_locale_key
+      assign locale_label = locale_key | t
+      unless locale_label contains 'translation missing' or locale_label == locale_key
+        assign final_label = locale_label
+      endunless
+    endif
+    
+    # 4. Product-specific overrides
+    if final_label == option.name
+      case product.handle
+        when 'silhouette-targets'
+          case option.name
+            when 'Color'
+              assign final_label = 'Target Color'
+            when 'Size'
+              assign final_label = 'Target Size'
+          endcase
+        when 'steel-targets'
+          case option.name
+            when 'Size'
+              assign final_label = 'Steel Plate Size'
+            when 'Thickness'
+              assign final_label = 'Steel Thickness'
+          endcase
+      endcase
+    endif
+    
+    # 5. Default hardcoded labels
+    if final_label == option.name
+      case option.name
+        when 'Color'
+          assign final_label = 'Choose Your Color'
+        when 'Size'
+          assign final_label = 'Select Size'
+        when 'Material'
+          assign final_label = 'Target Material'
+        when 'Style'
+          assign final_label = 'Target Style'
+      endcase
+    endif
+    
+  elsif type == 'value'
+    assign final_value = value
+    
+    # 1. Check locale translations first
+    assign value_key = value | downcase | strip | replace: ' ', '_' | replace: '(', '_' | replace: ')', '_' | replace: '-', '_' | replace: '°', '_'
+    assign locale_key = 'products.variant_values.' | append: value_key
+    assign locale_value = locale_key | t
+    unless locale_value contains 'translation missing' or locale_value == locale_key
+      assign final_value = locale_value
+    endunless
+    
+    # 2. Product-specific value overrides
+    if final_value == value
+      if product.handle contains 'silhouette'
+        case value
+          when 'Black'
+            assign final_value = 'Classic Silhouette'
+          when 'White'
+            assign final_value = 'High-Contrast White'
+        endcase
+      endif
+    endif
+    
+    # 3. General value overrides
+    if final_value == value
+      case option.name
+        when 'Size'
+          case value
+            when 'Small'
+              assign final_value = '12" Target'
+            when 'Medium'
+              assign final_value = '18" Target'
+            when 'Large'
+              assign final_value = '24" Target'
+            when 'XL'
+              assign final_value = '36" Target'
+          endcase
+        when 'Material'
+          case value
+            when 'Paper'
+              assign final_value = 'Weather-Resistant Paper'
+            when 'Cardboard'
+              assign final_value = 'Heavy-Duty Cardboard'
+            when 'Steel'
+              assign final_value = 'AR500 Steel'
+          endcase
+      endcase
+    endif
+    
+  else
+    # Default fallback
+    if value
+      assign final_output = value
+    else
+      assign final_output = option.name
+    endif
+  endif
+  
+  # Final output processing and assignment
+  if type == 'label'
+    if format == 'text'
+      assign final_output = final_label | strip_html | strip
+    else
+      assign final_output = final_label | newline_to_br
+    endif
+  elsif type == 'value'
+    if format == 'text'
+      assign final_output = final_value | strip_html | strip
+    else
+      assign final_output = final_value | newline_to_br
+    endif
+  endif
+-%}
+{{ final_output | strip }} 

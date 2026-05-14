@@ -1,0 +1,583 @@
+{% doc %}
+  @prompt
+    Create an FAQ for both mobile and desktop with a header and dropdowns for questions and answers
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-faq-container-{{ ai_gen_id }} {
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: {{ block.settings.section_padding }}px 20px;
+    background-color: {{ block.settings.background_color }};
+    display: block;
+  }
+
+  .ai-faq-header-{{ ai_gen_id }} {
+    text-align: {{ block.settings.header_alignment }};
+    margin-bottom: {{ block.settings.header_spacing }}px;
+  }
+
+  .ai-faq-title-{{ ai_gen_id }} {
+    color: {{ block.settings.title_color }};
+    margin: 0 0 {{ block.settings.subtitle_spacing }}px;
+    font-size: {{ block.settings.title_size }}px;
+    font-weight: {{ block.settings.title_weight }};
+  }
+
+  .ai-faq-subtitle-{{ ai_gen_id }} {
+    color: {{ block.settings.subtitle_color }};
+    margin: 0;
+    font-size: {{ block.settings.subtitle_size }}px;
+  }
+
+  .ai-faq-list-{{ ai_gen_id }} {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .ai-faq-item-{{ ai_gen_id }} {
+    border-bottom: 1px solid {{ block.settings.border_color }};
+  }
+
+  .ai-faq-item-{{ ai_gen_id }}:last-child {
+    border-bottom: none;
+  }
+
+  .ai-faq-question-{{ ai_gen_id }} {
+    width: 100%;
+    padding: {{ block.settings.question_padding }}px 40px {{ block.settings.question_padding }}px 0;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: {{ block.settings.question_color }};
+    font-size: {{ block.settings.question_size }}px;
+    font-weight: {{ block.settings.question_weight }};
+    transition: color 0.3s ease;
+    position: relative;
+  }
+
+  .ai-faq-question-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.question_hover_color }};
+  }
+
+  .ai-faq-question-text-{{ ai_gen_id }} {
+    flex: 1;
+    padding-right: 20px;
+  }
+
+  .ai-faq-icon-{{ ai_gen_id }} {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .ai-faq-icon-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    stroke: {{ block.settings.icon_color }};
+  }
+
+  .ai-faq-question-{{ ai_gen_id }}[aria-expanded="true"] .ai-faq-icon-{{ ai_gen_id }} {
+    transform: translateY(-50%) rotate(180deg);
+  }
+
+  .ai-faq-answer-{{ ai_gen_id }} {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    padding: 0;
+  }
+
+  .ai-faq-answer-{{ ai_gen_id }}.active {
+    max-height: 1000px;
+    padding: 0 0 {{ block.settings.answer_padding }}px 0;
+  }
+
+  .ai-faq-answer-content-{{ ai_gen_id }} {
+    color: {{ block.settings.answer_color }};
+    font-size: {{ block.settings.answer_size }}px;
+    line-height: 1.6;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-faq-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size | times: 0.8 }}px;
+    }
+
+    .ai-faq-question-{{ ai_gen_id }} {
+      font-size: {{ block.settings.question_size | times: 0.9 }}px;
+    }
+
+    .ai-faq-answer-content-{{ ai_gen_id }} {
+      font-size: {{ block.settings.answer_size | times: 0.9 }}px;
+    }
+  }
+{% endstyle %}
+
+<faq-accordion-{{ ai_gen_id }} class="ai-faq-container-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  {% if block.settings.title != blank or block.settings.subtitle != blank %}
+    <div class="ai-faq-header-{{ ai_gen_id }}">
+      {% if block.settings.title != blank %}
+        <h2 class="ai-faq-title-{{ ai_gen_id }}">{{ block.settings.title }}</h2>
+      {% endif %}
+      {% if block.settings.subtitle != blank %}
+        <div class="ai-faq-subtitle-{{ ai_gen_id }}">{{ block.settings.subtitle }}</div>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <ul class="ai-faq-list-{{ ai_gen_id }}">
+    {% for i in (1..10) %}
+      {% assign question_key = 'question_' | append: i %}
+      {% assign answer_key = 'answer_' | append: i %}
+      {% assign question = block.settings[question_key] %}
+      {% assign answer = block.settings[answer_key] %}
+
+      {% if question != blank and answer != blank %}
+        <li class="ai-faq-item-{{ ai_gen_id }}">
+          <button
+            class="ai-faq-question-{{ ai_gen_id }}"
+            aria-expanded="false"
+            aria-controls="ai-faq-answer-{{ ai_gen_id }}-{{ i }}"
+          >
+            <span class="ai-faq-question-text-{{ ai_gen_id }}">{{ question }}</span>
+            <span class="ai-faq-icon-{{ ai_gen_id }}">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </span>
+          </button>
+          <div
+            class="ai-faq-answer-{{ ai_gen_id }}"
+            id="ai-faq-answer-{{ ai_gen_id }}-{{ i }}"
+          >
+            <div class="ai-faq-answer-content-{{ ai_gen_id }}">{{ answer }}</div>
+          </div>
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+</faq-accordion-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class FaqAccordion{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.questions = this.querySelectorAll('.ai-faq-question-{{ ai_gen_id }}');
+        this.setupEventListeners();
+      }
+
+      setupEventListeners() {
+        this.questions.forEach((question) => {
+          question.addEventListener('click', () => {
+            const answer = question.nextElementSibling;
+            const isExpanded = question.getAttribute('aria-expanded') === 'true';
+
+            if (isExpanded) {
+              this.closeAnswer(question, answer);
+            } else {
+              this.openAnswer(question, answer);
+            }
+          });
+        });
+      }
+
+      openAnswer(question, answer) {
+        question.setAttribute('aria-expanded', 'true');
+        answer.classList.add('active');
+      }
+
+      closeAnswer(question, answer) {
+        question.setAttribute('aria-expanded', 'false');
+        answer.classList.remove('active');
+      }
+    }
+
+    customElements.define('faq-accordion-{{ ai_gen_id }}', FaqAccordion{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "FAQ accordion",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Find answers to common questions about our products and services"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Header alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "header_spacing",
+      "label": "Header spacing",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "subtitle_spacing",
+      "label": "Subtitle spacing",
+      "min": 5,
+      "max": 30,
+      "step": 5,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Questions"
+    },
+    {
+      "type": "text",
+      "id": "question_1",
+      "label": "Question 1",
+      "default": "What are your shipping options?"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_1",
+      "label": "Answer 1",
+      "default": "<p>We offer free standard shipping on all orders over $100. Express shipping is available for an additional fee.</p>"
+    },
+    {
+      "type": "text",
+      "id": "question_2",
+      "label": "Question 2",
+      "default": "What is your return policy?"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_2",
+      "label": "Answer 2",
+      "default": "<p>We accept returns within 30 days of purchase. Items must be unused and in original packaging.</p>"
+    },
+    {
+      "type": "text",
+      "id": "question_3",
+      "label": "Question 3",
+      "default": "How long does shipping take?"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_3",
+      "label": "Answer 3",
+      "default": "<p>Standard shipping typically takes 5-7 business days. Express shipping takes 2-3 business days.</p>"
+    },
+    {
+      "type": "text",
+      "id": "question_4",
+      "label": "Question 4",
+      "default": "Do you ship internationally?"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_4",
+      "label": "Answer 4",
+      "default": "<p>Yes, we ship to most countries worldwide. International shipping times vary by location.</p>"
+    },
+    {
+      "type": "text",
+      "id": "question_5",
+      "label": "Question 5"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_5",
+      "label": "Answer 5"
+    },
+    {
+      "type": "text",
+      "id": "question_6",
+      "label": "Question 6"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_6",
+      "label": "Answer 6"
+    },
+    {
+      "type": "text",
+      "id": "question_7",
+      "label": "Question 7"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_7",
+      "label": "Answer 7"
+    },
+    {
+      "type": "text",
+      "id": "question_8",
+      "label": "Question 8"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_8",
+      "label": "Answer 8"
+    },
+    {
+      "type": "text",
+      "id": "question_9",
+      "label": "Question 9"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_9",
+      "label": "Answer 9"
+    },
+    {
+      "type": "text",
+      "id": "question_10",
+      "label": "Question 10"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_10",
+      "label": "Answer 10"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section padding",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "question_padding",
+      "label": "Question padding",
+      "min": 10,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "answer_padding",
+      "label": "Answer padding",
+      "min": 10,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle",
+      "default": "#524e4d"
+    },
+    {
+      "type": "color",
+      "id": "question_color",
+      "label": "Question",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "question_hover_color",
+      "label": "Question hover",
+      "default": "#ce0707"
+    },
+    {
+      "type": "color",
+      "id": "answer_color",
+      "label": "Answer",
+      "default": "#524e4d"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border",
+      "default": "#dddddd"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Title weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "question_size",
+      "label": "Question size",
+      "min": 14,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "select",
+      "id": "question_weight",
+      "label": "Question weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "range",
+      "id": "answer_size",
+      "label": "Answer size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ accordion"
+    }
+  ]
+}
+{% endschema %}

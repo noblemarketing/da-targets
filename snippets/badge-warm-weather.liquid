@@ -1,0 +1,12 @@
+{% if product.tags contains 'warm-weather-pick' %}
+  <span class="da-season-badge da-season-badge--svg">
+    <img
+      src="{{ 'WarmWeatherBadge.svg' | asset_url }}"
+      width="352"
+      height="83"
+      class="da-season-badge__img"
+      alt="DA Pick for Spring &amp; Summer"
+      loading="lazy"
+    >
+  </span>
+{% endif %}
