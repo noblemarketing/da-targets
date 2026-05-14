@@ -985,6 +985,84 @@ window.Modals = (function() {
   return Modal;
 })();
 
+// Cart line helpers: Ajax money can be string; cart-level discounts may leave
+// original_line_price === final_line_price while list unit × qty is higher.
+theme.numCartMoney = function (v) {
+  if (v == null || v === '') return 0;
+  var n = Number(v);
+  return isNaN(n) ? 0 : n;
+};
+
+theme.cartLineFinalCents = function (cartItem) {
+  var f = theme.numCartMoney(cartItem.final_line_price);
+  if (f) return f;
+  return theme.numCartMoney(cartItem.line_price);
+};
+
+theme.cartLineDisplayOriginalCents = function (cartItem) {
+  var qty = Math.max(1, theme.numCartMoney(cartItem.quantity));
+  var origLine = theme.numCartMoney(cartItem.original_line_price);
+  var fromUnit = theme.numCartMoney(cartItem.price) * qty;
+  return Math.max(origLine, fromUnit);
+};
+
+theme.cartLineHasSavings = function (cartItem) {
+  var fin = theme.cartLineFinalCents(cartItem);
+  var orig = theme.cartLineDisplayOriginalCents(cartItem);
+  if (orig > fin) return true;
+  if (
+    cartItem.line_level_discount_allocations &&
+    cartItem.line_level_discount_allocations.length
+  ) {
+    return true;
+  }
+  if (cartItem.discounts && cartItem.discounts.length) return true;
+  return false;
+};
+
+// Cart line: discount titles for markup (Cart API + Handlebars + mini cart)
+theme.cartDiscountNamesMarkup = function (cartItem, cart) {
+  var seen = {};
+  var out = '';
+  function esc(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/"/g, '&quot;');
+  }
+  function addTitle(title) {
+    if (!title || seen[title]) return;
+    seen[title] = true;
+    out += '<p class="cart-item__discount-name m-0">' + esc(title) + '</p>';
+  }
+  var allocs = cartItem.line_level_discount_allocations;
+  if (allocs && allocs.length) {
+    for (var i = 0; i < allocs.length; i++) {
+      if (allocs[i].discount_application) {
+        addTitle(allocs[i].discount_application.title);
+      }
+    }
+  }
+  if (cartItem.discounts && cartItem.discounts.length) {
+    for (var j = 0; j < cartItem.discounts.length; j++) {
+      addTitle(cartItem.discounts[j].title);
+    }
+  }
+  var orig = theme.cartLineDisplayOriginalCents(cartItem);
+  var fin = theme.cartLineFinalCents(cartItem);
+  if (
+    cart &&
+    cart.cart_level_discount_applications &&
+    cart.cart_level_discount_applications.length &&
+    orig > fin
+  ) {
+    for (var k = 0; k < cart.cart_level_discount_applications.length; k++) {
+      addTitle(cart.cart_level_discount_applications[k].title);
+    }
+  }
+  return out;
+};
+
 window.QtySelector = (function() {
   var QtySelector = function($el) {
     this.cache = {
@@ -1209,12 +1287,10 @@ window.QtySelector = (function() {
         });
       }
 
-      var finalLineAmount =
-        typeof cartItem.final_line_price === 'number'
-          ? cartItem.final_line_price
-          : cartItem.line_price;
-      var discountsApplied =
-        cartItem.original_line_price > finalLineAmount;
+      var finalLineAmount = theme.cartLineFinalCents(cartItem);
+      var displayOrigCents = theme.cartLineDisplayOriginalCents(cartItem);
+      var showStrikeSavings = displayOrigCents > finalLineAmount;
+      var discountsApplied = showStrikeSavings;
 
       // Create item's data object and add to 'items' array
       item = {
@@ -1233,22 +1309,22 @@ window.QtySelector = (function() {
           theme.moneyFormat
         ),
         originalLinePrice: theme.Currency.formatMoney(
-          cartItem.original_line_price,
+          displayOrigCents,
           theme.moneyFormat
         ),
         discounts: cartItem.discounts,
         discountsApplied: discountsApplied,
-        lineSavingsHtml: discountsApplied
+        lineSavingsHtml: showStrikeSavings
           ? (theme.strings.cartLineSaveHtml || 'Save [amount]').replace(
               '[amount]',
               theme.Currency.formatMoney(
-                cartItem.original_line_price - finalLineAmount,
+                displayOrigCents - finalLineAmount,
                 theme.moneyFormat
               )
             )
           : '',
-        discountNamesHtml: discountsApplied
-          ? theme.cartDiscountNamesMarkup(cartItem)
+        discountNamesHtml: theme.cartLineHasSavings(cartItem)
+          ? theme.cartDiscountNamesMarkup(cartItem, cart)
           : ''
       };
 
@@ -4898,36 +4974,6 @@ theme.openAddon = (function(){
 
 
 
-// Cart line: discount titles for markup (Cart API + Handlebars + mini cart)
-theme.cartDiscountNamesMarkup = function (cartItem) {
-  var seen = {};
-  var out = '';
-  function esc(s) {
-    return String(s)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/"/g, '&quot;');
-  }
-  function addTitle(title) {
-    if (!title || seen[title]) return;
-    seen[title] = true;
-    out += '<p class="cart-item__discount-name m-0">' + esc(title) + '</p>';
-  }
-  var allocs = cartItem.line_level_discount_allocations;
-  if (allocs && allocs.length) {
-    for (var i = 0; i < allocs.length; i++) {
-      if (allocs[i].discount_application) {
-        addTitle(allocs[i].discount_application.title);
-      }
-    }
-  } else if (cartItem.discounts && cartItem.discounts.length) {
-    for (var j = 0; j < cartItem.discounts.length; j++) {
-      addTitle(cartItem.discounts[j].title);
-    }
-  }
-  return out;
-};
-
 // MiniCart
 theme.miniCart = (function(){
   var miniCart = '.js-mini-cart',
@@ -4982,14 +5028,12 @@ theme.miniCart = (function(){
       for (let i = 0; i < forLoop; i++) { 
         var line = i+1;
         var product = cart.items[i];
-        var finalLine =
-          typeof product.final_line_price === 'number'
-            ? product.final_line_price
-            : product.line_price;
+        var finalLine = theme.cartLineFinalCents(product);
+        var displayOrig = theme.cartLineDisplayOriginalCents(product);
         var priceRow = '';
-        if (product.original_line_price > finalLine) {
+        if (displayOrig > finalLine) {
           var origLine = theme.Currency.formatMoney(
-            product.original_line_price,
+            displayOrig,
             theme.moneyFormat
           );
           var newLine = theme.Currency.formatMoney(
@@ -4997,7 +5041,7 @@ theme.miniCart = (function(){
             theme.moneyFormat
           );
           var saveLine = theme.Currency.formatMoney(
-            product.original_line_price - finalLine,
+            displayOrig - finalLine,
             theme.moneyFormat
           );
           var saveLabel = (theme.strings.cartLineSaveHtml || 'Save [amount]').replace(
@@ -5006,7 +5050,7 @@ theme.miniCart = (function(){
           );
           var discountNames =
             typeof theme.cartDiscountNamesMarkup === 'function'
-              ? theme.cartDiscountNamesMarkup(product)
+              ? theme.cartDiscountNamesMarkup(product, cart)
               : '';
           priceRow =
             '<div class="mini-cart-item__pricing"><span class="mini-cart-item__price-original"><s>' +
@@ -5017,12 +5061,28 @@ theme.miniCart = (function(){
             saveLabel +
             '</p>' +
             discountNames;
-        } else {
-          var productPrice = theme.Currency.formatMoney(
-            product.price,
+        } else if (
+          product.line_level_discount_allocations &&
+          product.line_level_discount_allocations.length
+        ) {
+          var newLineAlloc = theme.Currency.formatMoney(
+            finalLine,
             theme.moneyFormat
           );
-          priceRow = '<span>' + productPrice + '</span>';
+          var discountNamesAlloc =
+            typeof theme.cartDiscountNamesMarkup === 'function'
+              ? theme.cartDiscountNamesMarkup(product, cart)
+              : '';
+          priceRow =
+            '<span class="mini-cart-item__price-current">' +
+            newLineAlloc +
+            '</span>' +
+            discountNamesAlloc;
+        } else {
+          priceRow =
+            '<span>' +
+            theme.Currency.formatMoney(finalLine, theme.moneyFormat) +
+            '</span>';
         }
         theme.GiftWrap.hideGift(product.id);
         htmlCart += `<div class="mini-cart-item">`;

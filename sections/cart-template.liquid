@@ -94,21 +94,36 @@
                           <div class="cart-item__line-price">
                             {%- liquid
                               assign item_line_final = item.final_line_price | default: item.line_price
+                              assign qty_line = item.quantity
+                              if qty_line < 1
+                                assign qty_line = 1
+                              endif
+                              assign list_from_unit = item.price | times: qty_line
+                              assign display_orig_line = item.original_line_price
+                              if list_from_unit > display_orig_line
+                                assign display_orig_line = list_from_unit
+                              endif
                             -%}
-                            {% if item.original_line_price != item_line_final %}
+                            {% if display_orig_line > item_line_final %}
                               <div class="d-flex flex-wrap align-items-baseline gap-1">
-                                <small class="cart-item__original-price cart__item-total mb-0"><s>{{ item.original_line_price | money }}</s></small>
+                                <small class="cart-item__original-price cart__item-total mb-0"><s>{{ display_orig_line | money }}</s></small>
                                 <span class="cart__item-total text-body">{{ item_line_final | money }}</span>
                               </div>
-                              {%- capture cart_line_save_formatted -%}{{ item.original_line_price | minus: item_line_final | money }}{%- endcapture -%}
+                              {%- capture cart_line_save_formatted -%}{{ display_orig_line | minus: item_line_final | money }}{%- endcapture -%}
                               <p class="cart-item__line-savings mb-0">{{ 'cart.general.line_save_html' | t: amount: cart_line_save_formatted }}</p>
                               {%- if item.line_level_discount_allocations.size > 0 -%}
                                 {%- for a in item.line_level_discount_allocations -%}
                                   <p class="cart-item__discount-name mb-0">{{ a.discount_application.title }}</p>
                                 {%- endfor -%}
-                              {%- elsif item.discounts.size > 0 -%}
+                              {%- endif -%}
+                              {%- if item.discounts.size > 0 -%}
                                 {%- for discount in item.discounts -%}
                                   <p class="cart-item__discount-name mb-0">{{ discount.title }}</p>
+                                {%- endfor -%}
+                              {%- endif -%}
+                              {%- if cart.cart_level_discount_applications != blank -%}
+                                {%- for app in cart.cart_level_discount_applications -%}
+                                  <p class="cart-item__discount-name mb-0">{{ app.title }}</p>
                                 {%- endfor -%}
                               {%- endif -%}
                             {% else %}
@@ -162,21 +177,36 @@
                     <td class="cart__cell--total d-none d-lg-table-cell">
                       {%- liquid
                         assign item_line_final = item.final_line_price | default: item.line_price
+                        assign qty_line = item.quantity
+                        if qty_line < 1
+                          assign qty_line = 1
+                        endif
+                        assign list_from_unit = item.price | times: qty_line
+                        assign display_orig_line = item.original_line_price
+                        if list_from_unit > display_orig_line
+                          assign display_orig_line = list_from_unit
+                        endif
                       -%}
-                      {% if item.original_line_price != item_line_final %}
+                      {% if display_orig_line > item_line_final %}
                         <div class="d-flex flex-wrap align-items-baseline gap-1">
-                          <small class="cart-item__original-price cart__item-total mb-0"><s>{{ item.original_line_price | money }}</s></small>
+                          <small class="cart-item__original-price cart__item-total mb-0"><s>{{ display_orig_line | money }}</s></small>
                           <span class="cart__item-total text-body">{{ item_line_final | money }}</span>
                         </div>
-                        {%- capture cart_line_save_formatted -%}{{ item.original_line_price | minus: item_line_final | money }}{%- endcapture -%}
+                        {%- capture cart_line_save_formatted -%}{{ display_orig_line | minus: item_line_final | money }}{%- endcapture -%}
                         <p class="cart-item__line-savings mb-0">{{ 'cart.general.line_save_html' | t: amount: cart_line_save_formatted }}</p>
                         {%- if item.line_level_discount_allocations.size > 0 -%}
                           {%- for a in item.line_level_discount_allocations -%}
                             <p class="cart-item__discount-name mb-0">{{ a.discount_application.title }}</p>
                           {%- endfor -%}
-                        {%- elsif item.discounts.size > 0 -%}
+                        {%- endif -%}
+                        {%- if item.discounts.size > 0 -%}
                           {%- for discount in item.discounts -%}
                             <p class="cart-item__discount-name mb-0">{{ discount.title }}</p>
+                          {%- endfor -%}
+                        {%- endif -%}
+                        {%- if cart.cart_level_discount_applications != blank -%}
+                          {%- for app in cart.cart_level_discount_applications -%}
+                            <p class="cart-item__discount-name mb-0">{{ app.title }}</p>
                           {%- endfor -%}
                         {%- endif -%}
                       {% else %}
@@ -361,10 +391,10 @@
                 <span class="cart__item-total">{{{linePrice}}}</span>
                 </div>
                 <p class="cart-item__line-savings mb-0">{{{lineSavingsHtml}}}</p>
-                {{{discountNamesHtml}}}
               {{else}}
                 <span class="cart__item-total">{{{linePrice}}}</span>
               {{/if}}
+                {{{discountNamesHtml}}}
               </div>
               <div class="qty-mobile">
                 <label for="Updates_{{ key }}" class="cart__quantity-label hide">
@@ -409,10 +439,10 @@
             <span class="cart__item-total">{{{linePrice}}}</span>
             </div>
             <p class="cart-item__line-savings mb-0">{{{lineSavingsHtml}}}</p>
-            {{{discountNamesHtml}}}
           {{else}}
             <span class="cart__item-total">{{{linePrice}}}</span>
           {{/if}}
+            {{{discountNamesHtml}}}
         </td>
       </tr>
       {{/items}}
