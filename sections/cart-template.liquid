@@ -41,6 +41,20 @@
     line-height: var(--g-input-height);
     padding: 0 1rem;
   }
+  @media (max-width: 991px) {
+    .cart-page-layout {
+      display: flex;
+      flex-direction: column-reverse;
+    }
+    .cart-page-layout > [class*="col-"] {
+      width: 100%;
+      max-width: 100%;
+      flex: 0 0 100%;
+    }
+    .cart-page-layout > .col-lg-8 {
+      margin-top: 1.25rem;
+    }
+  }
 </style>
 <div data-section-id="{{ section.id }}" data-section-type="cart">
   <div class="container">
@@ -55,7 +69,7 @@
             assign cart_raw_line_sum = cart_raw_line_sum | plus: lf
           endfor
         -%}
-        <div class="row">
+        <div class="row cart-page-layout">
           <div class="col-lg-8 pr-lg-5">
             <table class="responsive-table cart-table">
               <thead class="cart__row">

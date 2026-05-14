@@ -226,3 +226,28 @@ table.no-headings td:last-child {
 .cart__form+.gift-wrapping {
   padding-block-start: var(--sp-4);
 }
+
+/* Mobile / small tablet: full order summary in flow above line items (no sticky strip) */
+@media screen and (max-width: 1023px) {
+  main-cart.cart__content {
+    flex-direction: column;
+  }
+
+  main-cart.cart__content > .grow-0 {
+    order: -1;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  main-cart.cart__content > .grow {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  main-cart.cart__content sticky-element {
+    position: static !important;
+    top: auto !important;
+    bottom: auto !important;
+    align-self: stretch;
+  }
+}
