@@ -148,6 +148,7 @@
     "color_price": "#211c1b",
     "color_price_sale": "#e54747",
     "color_price_sale_compare": "#e54747",
+    "color_price_sale_compare_card": "#000000",
     "color_border_product": "rgba(0,0,0,0)",
     "menu_label_size": 13,
     "menu_label_space": 0,

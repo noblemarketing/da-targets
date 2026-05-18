@@ -1736,6 +1736,12 @@
       },
       {
         "type": "color",
+        "id": "color_price_sale_compare_card",
+        "label": "Compare price on product cards (collections / grids)",
+        "default": "#000000"
+      },
+      {
+        "type": "color",
         "id": "color_border_product",
         "label": "Color Border",
         "default": "#E1E1E1"

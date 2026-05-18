@@ -4752,7 +4752,7 @@ p a:not(.button):focus,
 }
 .product-card__regular-price {
   opacity: 1;
-  color: var(--color-price-sale-compare);
+  color: var(--color-price-sale-compare-card, var(--color-price, #000));
   margin-left: 6px;
   font-size: 12px;
 }
@@ -4791,7 +4791,7 @@ p a:not(.button):focus,
 }
 .product-card__price.price--on-sale .price-item--regular s {
   text-decoration: line-through;
-  color: var(--color-price-sale-compare, var(--g-color-heading));
+  color: var(--color-price-sale-compare-card, var(--color-price, #000));
   font-weight: 400;
   font-size: 0.9em;
 }
