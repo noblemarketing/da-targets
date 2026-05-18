@@ -29,16 +29,21 @@
   assign display_compare = compare_at_price
   assign display_sale = catalog_price
 
-  if compare_at_price != blank and compare_at_price > catalog_price
+  assign sitewide_pct = settings.sitewide_sale_percent | default: 25
+
+  if settings.sitewide_sale_enable and sitewide_pct > 0
     assign on_sale = true
-    assign display_compare = compare_at_price
-    assign display_sale = catalog_price
-  elsif settings.sitewide_sale_enable and settings.sitewide_sale_percent > 0
-    assign on_sale = true
-    assign pct = settings.sitewide_sale_percent
+    assign pct = sitewide_pct
     assign multiplier = 100 | minus: pct
     assign display_sale = catalog_price | times: multiplier | divided_by: 100
     assign display_compare = catalog_price
+  elsif compare_at_price != blank and compare_at_price > catalog_price
+    assign compare_savings_pct = compare_at_price | minus: catalog_price | times: 100 | divided_by: compare_at_price
+    if compare_savings_pct >= 1
+      assign on_sale = true
+      assign display_compare = compare_at_price
+      assign display_sale = catalog_price
+    endif
   endif
 
   assign price = display_sale

@@ -1096,17 +1096,6 @@ theme.variantDisplayPrices = function (variant) {
   if (!variant) {
     return { onSale: false, original: 0, sale: 0, percent: 0 };
   }
-  if (variant.compare_at_price > variant.price) {
-    return {
-      onSale: true,
-      original: variant.compare_at_price,
-      sale: variant.price,
-      percent: Math.round(
-        ((variant.compare_at_price - variant.price) * 100) /
-          variant.compare_at_price
-      )
-    };
-  }
   if (
     theme.sitewideSale &&
     theme.sitewideSale.enabled &&
@@ -1119,6 +1108,20 @@ theme.variantDisplayPrices = function (variant) {
       sale: Math.round((variant.price * (100 - pct)) / 100),
       percent: pct
     };
+  }
+  if (variant.compare_at_price > variant.price) {
+    var comparePercent = Math.round(
+      ((variant.compare_at_price - variant.price) * 100) /
+        variant.compare_at_price
+    );
+    if (comparePercent >= 1) {
+      return {
+        onSale: true,
+        original: variant.compare_at_price,
+        sale: variant.price,
+        percent: comparePercent
+      };
+    }
   }
   return {
     onSale: false,
