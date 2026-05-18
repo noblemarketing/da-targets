@@ -1092,6 +1092,42 @@ theme.cartLineHasSavings = function (cartItem, cart) {
 };
 
 // Cart line: discount titles for markup (Cart API + Handlebars + mini cart)
+theme.variantDisplayPrices = function (variant) {
+  if (!variant) {
+    return { onSale: false, original: 0, sale: 0, percent: 0 };
+  }
+  if (variant.compare_at_price > variant.price) {
+    return {
+      onSale: true,
+      original: variant.compare_at_price,
+      sale: variant.price,
+      percent: Math.round(
+        ((variant.compare_at_price - variant.price) * 100) /
+          variant.compare_at_price
+      )
+    };
+  }
+  if (
+    theme.sitewideSale &&
+    theme.sitewideSale.enabled &&
+    theme.sitewideSale.percent > 0
+  ) {
+    var pct = theme.sitewideSale.percent;
+    return {
+      onSale: true,
+      original: variant.price,
+      sale: Math.round((variant.price * (100 - pct)) / 100),
+      percent: pct
+    };
+  }
+  return {
+    onSale: false,
+    original: variant.price,
+    sale: variant.price,
+    percent: 0
+  };
+};
+
 theme.cartDiscountNamesMarkup = function (cartItem, cart) {
   var seen = {};
   var out = '';
@@ -1887,13 +1923,11 @@ theme.Product = (function() {
       // eslint-disable-next-line no-new
       this.variants = new slate.Variants(options);
       var variant = this.variants
-      if( variant.currentVariant.compare_at_price > variant.currentVariant.price){
-        var load_sale_minus = variant.currentVariant.compare_at_price - variant.currentVariant.price;
-        var load_sale_per = load_sale_minus*100 / variant.currentVariant.compare_at_price;
-        var load_roundNumber = Math.round(load_sale_per);
-        $(this.selectors.numbersale_change).text(`${load_roundNumber}%`);
+      var loadPrices = theme.variantDisplayPrices(variant.currentVariant);
+      if (loadPrices.onSale) {
+        $(this.selectors.numbersale_change).text(loadPrices.percent + '%');
         $(this.selectors.labelwrap_sale).removeClass('hide');
-      }else{
+      } else {
         $(this.selectors.labelwrap_sale).addClass('hide');
       }
       this.$container.on(
@@ -2046,36 +2080,26 @@ theme.Product = (function() {
       var variant = evt.variant;
 
       if (variant) {
+        var prices = theme.variantDisplayPrices(variant);
         $(this.selectors.productPrice).html(
-          theme.Currency.formatMoney(variant.price, theme.moneyFormat)
+          theme.Currency.formatMoney(prices.sale, theme.moneyFormat)
         );
 
-        // Update and show the product's compare price if necessary
-        if (variant.compare_at_price > variant.price) {
-          var sale_minus = variant.compare_at_price - variant.price;
-          var sale_per = sale_minus*100/variant.compare_at_price
-          var roundNumber = Math.round(sale_per);
-          $(this.selectors.numbersale_change).text(`${roundNumber}%`);
+        if (prices.onSale) {
+          $(this.selectors.numbersale_change).text(prices.percent + '%');
           $(this.selectors.labelwrap_sale).removeClass('hide');
-
           $(this.selectors.comparePrice)
             .html(
-              theme.Currency.formatMoney(
-                variant.compare_at_price,
-                theme.moneyFormat
-              )
+              theme.Currency.formatMoney(prices.original, theme.moneyFormat)
             )
             .removeClass('hide');
           $(this.selectors.saleTag).removeClass('hide');
         } else {
-          $(this.selectors.comparePrice).addClass('hide');
+          $(this.selectors.comparePrice).addClass('hide').html('');
           $(this.selectors.saleTag).addClass('hide');
           $(this.selectors.labelwrap_sale).addClass('hide');
         }
-        
-        //theme.updateCurrencies();
       } else {
-        
         $(this.selectors.comparePrice).addClass('hide');
       }
     },
@@ -2115,7 +2139,10 @@ theme.Product = (function() {
         //update title
         $stickyTitle.html(' - ' + variant.title);
         //update price
-        $stickyPrice.html(theme.Currency.formatMoney(variant.price, theme.moneyFormat));
+        var stickyPrices = theme.variantDisplayPrices(variant);
+        $stickyPrice.html(
+          theme.Currency.formatMoney(stickyPrices.sale, theme.moneyFormat)
+        );
         //update selectbox
         for (var i = 1; i <= 3; i++) {
           var option = 'option' + i,

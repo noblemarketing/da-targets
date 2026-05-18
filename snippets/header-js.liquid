@@ -33,6 +33,10 @@
   theme.timePopupNewsletter = {{ settings.pnewletter_time }};
   theme.enableCurrencies = {{ settings.show_multiple_currencies }};
   theme.loadingClass = 'spinner-{{ settings.loading }}';
+  theme.sitewideSale = {
+    enabled: {{ settings.sitewide_sale_enable | json }},
+    percent: {{ settings.sitewide_sale_percent | default: 25 | json }}
+  };
     theme.strings = {
     stockAvailable: {{ 'products.product.stock_available' | t: count: '1' | json }},
     freeShipping: {{ settings.free_shipping_text | json }},

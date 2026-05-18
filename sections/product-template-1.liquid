@@ -209,6 +209,15 @@
   .product-single__meta .salepoint + .salepoint{
     margin:-1rem 0 1.5rem ;
   }
+  .product-single__price-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 0.75rem;
+  }
+  .product-single__price--compare.hide {
+    display: none !important;
+  }
   .product-single__meta .salepoint + .product-freeship{
     margin:-1rem 0 1.5rem ;
   }
@@ -468,47 +477,7 @@
               <hr/>
             {%- when 'price' -%}
               <ul class="product-block product-single__meta-list product-single__meta-price list--inline{% if shop.taxes_included or shop.shipping_policy.body != blank %} product-single__price-container{% endif %}">
-                <li>
-                  {%- unless product.compare_at_price_max > product.price -%}
-                  <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
-                  {%- endunless -%}
-                  <span id="ProductPrice-{{ section.id }}" class="product-single__price" itemprop="price" content="{{ current_variant.price | divided_by: 100.00 }}">
-                    {{ current_variant.price | money }}
-                  </span>
-                </li>
-                {% if product.compare_at_price_max > product.price %}
-                <li>
-                  <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
-                  <s id="ComparePrice-{{ section.id }}" class="product-single__price product-single__price--compare">
-                    {{ current_variant.compare_at_price | money }}
-                  </s>
-                </li>
-                {% endif %}
-                {%- if settings.sale_label_enable -%}
-                <li>
-                  {% capture txtupper %}{% if settings.txtuppercase %}text-uppercase {% endif %}{% endcapture %}
-                  <div class="d-inline-block hide product-tag product-tag-sale product-tag--absolute {{ txtupper }} {{ settings.tagsale }}" aria-hidden="true" style="background-color: {{ settings.sale_label_bg_product }};color:{{ settings.sale_label_cl_product }}">
-                    {%- liquid 
-                      if product.first_available_variant.compare_at_price 
-                          assign s =  product.first_available_variant.compare_at_price | minus: product.first_available_variant.price | times: 100
-                          assign f =  product.first_available_variant.compare_at_price
-                          assign sale_percent = s | divided_by: f | round
-                      else
-                          assign sale_percent = product.compare_at_price_max | minus: product.price | times: 100 | divided_by: product.compare_at_price_max | round
-                      endif
-                  -%}
-                    
-                      {%- if settings.tagsale == 'percent' -%}
-                          -{{ sale_percent | append: '%' }}
-                      {%- elsif settings.tagsale == 'txt' -%}
-                          {{ settings.sale_label_text | default: 'on sale' }}
-                      {%- else -%}
-                      {{ settings.sale_label_text | default: 'on sale' }} <span class="product-tag-sale-number">{{ sale_percent | append: '%' }} </span> 
-                      {%- endif -%}
-                  </div>
-                  </li>
-                {%- endif -%}
-                      
+                {%- render 'product-single-price', variant: current_variant, section_id: section.id -%}
                 {%- if section.settings.stock_enable -%}
                 <li>{%- render 'productStock' , current_variant : current_variant -%}</li>
                 {%- endif -%}

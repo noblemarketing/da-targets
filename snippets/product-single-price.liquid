@@ -1,0 +1,59 @@
+{%- comment -%}
+  Product detail price: compare-at sale OR sitewide % off display.
+  Accepts: variant (required), section_id (required)
+{%- endcomment -%}
+{%- liquid
+  assign v = variant
+  assign catalog_price = v.price
+  assign compare_at = v.compare_at_price
+  assign on_sale = false
+  assign display_original = catalog_price
+  assign display_sale = catalog_price
+  assign sale_percent = 0
+
+  if compare_at != blank and compare_at > catalog_price
+    assign on_sale = true
+    assign display_original = compare_at
+    assign display_sale = catalog_price
+    assign sale_percent = compare_at | minus: catalog_price | times: 100 | divided_by: compare_at
+  elsif settings.sitewide_sale_enable and settings.sitewide_sale_percent > 0
+    assign on_sale = true
+    assign pct = settings.sitewide_sale_percent
+    assign multiplier = 100 | minus: pct
+    assign display_sale = catalog_price | times: multiplier | divided_by: 100
+    assign display_original = catalog_price
+    assign sale_percent = pct
+  endif
+-%}
+<li class="product-single__price-row">
+  {%- if on_sale -%}
+    <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+    <s id="ComparePrice-{{ section_id }}" class="product-single__price product-single__price--compare">
+      {{ display_original | money }}
+    </s>
+    <span class="visually-hidden">{{ 'products.product.price.sale_price' | t }}</span>
+    <span id="ProductPrice-{{ section_id }}" class="product-single__price" itemprop="price" content="{{ display_sale | divided_by: 100.00 }}">
+      {{ display_sale | money }}
+    </span>
+  {%- else -%}
+    <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+    <span id="ProductPrice-{{ section_id }}" class="product-single__price" itemprop="price" content="{{ catalog_price | divided_by: 100.00 }}">
+      {{ catalog_price | money }}
+    </span>
+    <s id="ComparePrice-{{ section_id }}" class="product-single__price product-single__price--compare hide" aria-hidden="true"></s>
+  {%- endif -%}
+</li>
+{%- if on_sale and settings.sale_label_enable -%}
+  {%- capture txtupper %}{% if settings.txtuppercase %}text-uppercase {% endif %}{% endcapture -%}
+  <li>
+    <div class="d-inline-block product-tag product-tag-sale product-tag--absolute {{ txtupper }} {{ settings.tagsale }}" aria-hidden="true" style="background-color: {{ settings.sale_label_bg_product }};color:{{ settings.sale_label_cl_product }}">
+      {%- if settings.tagsale == 'percent' -%}
+        -{{ sale_percent | round }}%
+      {%- elsif settings.tagsale == 'txt' -%}
+        {{ settings.sale_label_text | default: 'on sale' }}
+      {%- else -%}
+        {{ settings.sale_label_text | default: 'on sale' }} <span class="product-tag-sale-number">{{ sale_percent | round }}%</span>
+      {%- endif -%}
+    </div>
+  </li>
+{%- endif -%}

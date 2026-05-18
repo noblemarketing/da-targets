@@ -1929,6 +1929,30 @@
       },
       {
         "type": "header",
+        "content": "Sitewide sale (product pages)"
+      },
+      {
+        "type": "paragraph",
+        "content": "Use when a storewide discount is active but products do not have a compare-at price. Shows the catalog price crossed out and the discounted price. Turn off when the sale ends."
+      },
+      {
+        "type": "checkbox",
+        "id": "sitewide_sale_enable",
+        "default": true,
+        "label": "Show sitewide sale prices on product pages"
+      },
+      {
+        "type": "range",
+        "id": "sitewide_sale_percent",
+        "min": 1,
+        "max": 90,
+        "step": 1,
+        "unit": "%",
+        "label": "Discount percent",
+        "default": 25
+      },
+      {
+        "type": "header",
         "content": "🏷️ Custom label 1"
       },
       {
