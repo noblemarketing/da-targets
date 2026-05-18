@@ -1925,8 +1925,10 @@ theme.Product = (function() {
       var variant = this.variants
       var loadPrices = theme.variantDisplayPrices(variant.currentVariant);
       if (loadPrices.onSale) {
-        $(this.selectors.numbersale_change).text(loadPrices.percent + '%');
-        $(this.selectors.labelwrap_sale).removeClass('hide');
+        $(this.selectors.labelwrap_sale)
+          .removeClass('hide')
+          .html(Math.round(loadPrices.percent) + '% off');
+        $(this.selectors.numbersale_change).text(Math.round(loadPrices.percent));
       } else {
         $(this.selectors.labelwrap_sale).addClass('hide');
       }
@@ -2086,8 +2088,10 @@ theme.Product = (function() {
         );
 
         if (prices.onSale) {
-          $(this.selectors.numbersale_change).text(prices.percent + '%');
-          $(this.selectors.labelwrap_sale).removeClass('hide');
+          $(this.selectors.labelwrap_sale)
+            .removeClass('hide')
+            .html(Math.round(prices.percent) + '% off');
+          $(this.selectors.numbersale_change).text(Math.round(prices.percent));
           $(this.selectors.comparePrice)
             .html(
               theme.Currency.formatMoney(prices.original, theme.moneyFormat)
@@ -5845,8 +5849,22 @@ theme.swatchCard2 = (function(){
       var $price = $wrapObject.find('.product-card__price');
       var variant = evt.variant;
       if (variant !== undefined){
-        var htmlComparePrice = variant.compare_at_price !== null ? '<s class="product-card__regular-price"><span class="money">'+variant.compare_at_price+'</span></s>' : '';
-        var htmlPrice = '<span class="money">'+variant.price+'</span>' + htmlComparePrice ;
+        var prices = theme.variantDisplayPrices(variant);
+        var htmlComparePrice = prices.onSale
+          ? '<s class="product-card__regular-price"><span class="money">' +
+            theme.Currency.formatMoney(prices.original, theme.moneyFormat) +
+            '</span></s>'
+          : '';
+        var htmlPrice =
+          htmlComparePrice +
+          '<span class="money">' +
+          theme.Currency.formatMoney(prices.sale, theme.moneyFormat) +
+          '</span>';
+        if (prices.onSale) {
+          $price.addClass('product-card__pricesale');
+        } else {
+          $price.removeClass('product-card__pricesale');
+        }
         $price.html(htmlPrice);
         //theme.updateCurrencies();
       }

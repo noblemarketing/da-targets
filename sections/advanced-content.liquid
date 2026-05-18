@@ -270,31 +270,7 @@
                             <a href="{{ product.url }}" title="{{ product.title }}" class="h6 mb-2 d-block">{{ product.title }}
                             </a>
                             {%- if product.available -%}
-                              <div class="product-card__price">
-                                {%- if product.compare_at_price > product.price -%}
-                                  {%- if product.price_varies -%}
-                                    {%- assign sale_price = product.price | money -%}
-                                    {{ 'products.product.on_sale_from_html' | t: price: sale_price }}
-                                  {%- else -%}
-                                    <span class="visually-hidden">{{ 'products.product.regular_price' | t }}
-                                    </span>
-                                    <s class="product-card__regular-price">{{ product.compare_at_price | money }}
-                                    </s>
-                                    <span class="visually-hidden">{{ 'products.product.sale_price' | t }}
-                                    </span>
-                                    {{ product.price | money }}
-                                  {%- endif -%}
-                                {%- else -%}
-                                  {%- if product.price_varies -%}
-                                    {%- assign price = product.price | money -%}
-                                    {{ 'products.product.from_text_html' | t: price: price }}
-                                  {%- else -%}
-                                    <span class="visually-hidden">{{ 'products.product.regular_price' | t }}
-                                    </span>
-                                    {{ product.price | money }}
-                                  {%- endif -%}
-                                {%- endif -%}
-                              </div>
+                              {%- render 'price', product: product, use_variant: true, show_badges: false, price_class: 'product-card__price' -%}
                             {%- else -%}
                               <div class="product-card__availability">
                                 {{ 'products.product.sold_out' | t }}

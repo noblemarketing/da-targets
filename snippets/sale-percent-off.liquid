@@ -1,0 +1,8 @@
+{%- comment -%}
+  Sale badge / label copy. Requires sale_percent (number).
+{%- endcomment -%}
+{%- if settings.tagsale == 'txt' -%}
+  {{ settings.sale_label_text | default: 'on sale' }}
+{%- else -%}
+  {{ sale_percent | round }}% off
+{%- endif -%}

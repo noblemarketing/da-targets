@@ -17,31 +17,65 @@
     assign target = product
   endif
 
+  assign catalog_price = target.price | default: 1999
   assign compare_at_price = target.compare_at_price
-  assign price = target.price | default: 1999
   assign available = target.available | default: false
+  assign on_sale = false
+  assign display_compare = compare_at_price
+  assign display_sale = catalog_price
+
+  if compare_at_price != blank and compare_at_price > catalog_price
+    assign on_sale = true
+    assign display_compare = compare_at_price
+    assign display_sale = catalog_price
+  elsif settings.sitewide_sale_enable and settings.sitewide_sale_percent > 0
+    assign on_sale = true
+    assign pct = settings.sitewide_sale_percent
+    assign multiplier = 100 | minus: pct
+    assign display_sale = catalog_price | times: multiplier | divided_by: 100
+    assign display_compare = catalog_price
+  endif
+
+  assign price = display_sale
+  assign compare_at_price = display_compare
+
   assign money_price = price | money
   if settings.currency_code_enabled
     assign money_price = price | money_with_currency
   endif
 
   if target == product and product.price_varies
-    assign money_price = 'products.product.price.from_price_html' | t: price: money_price
+    if on_sale and settings.sitewide_sale_enable and settings.sitewide_sale_percent > 0 and compare_at_price == display_compare and catalog_price == display_compare
+      assign varied_sale = product.price_min | times: multiplier | divided_by: 100
+      if settings.currency_code_enabled
+        assign varied_sale_money = varied_sale | money_with_currency
+      else
+        assign varied_sale_money = varied_sale | money
+      endif
+      assign money_price = 'products.product.price.from_price_html' | t: price: varied_sale_money
+    elsif on_sale == false
+      if settings.currency_code_enabled
+        assign from_money = product.price_min | money_with_currency
+      else
+        assign from_money = product.price_min | money
+      endif
+      assign money_price = 'products.product.price.from_price_html' | t: price: from_money
+    endif
+  endif
+
+  assign compare_money = display_compare | money
+  if settings.currency_code_enabled
+    assign compare_money = display_compare | money_with_currency
   endif
 -%}
 
 <div class="mt-1 price
   {%- if price_class %} {{ price_class }}{% endif -%}
   {%- if available == false %} price--sold-out {% endif -%}
-  {%- if compare_at_price > price %} price--on-sale {% endif -%}
+  {%- if on_sale %} price--on-sale {% endif -%}
   {%- if product.price_varies == false and product.compare_at_price_varies %} price--no-compare{% endif -%}
   {%- if show_badges %} price--show-badge{% endif -%}">
   <div class="price__container">
-    {%- comment -%}
-      Explanation of description list:
-        - div.price__regular: Displayed when there are no variants on sale
-        - div.price__sale: Displayed when a variant is a sale
-    {%- endcomment -%}
     <div class="price__regular">
       <span class="visually-hidden visually-hidden--inline">{{ 'products.product.price.regular_price' | t }}</span>
       <span class="price-item price-item--regular">
@@ -53,24 +87,23 @@
         <span class="visually-hidden visually-hidden--inline">{{ 'products.product.price.regular_price' | t }}</span>
         <span>
           <s class="price-item price-item--regular small">
-            {% if settings.currency_code_enabled %}
-              {{ compare_at_price | money_with_currency }}
-            {% else %}
-              {{ compare_at_price | money }}
-            {% endif %}
+            {{ compare_money }}
           </s>
         </span>
       {%- endunless -%}
       <span class="visually-hidden visually-hidden--inline">{{ 'products.product.price.sale_price' | t }}</span>
       <span class="price-item price-item--sale price-item--last">
-        {{ money_price }}
+        {%- if settings.currency_code_enabled -%}
+          {{ price | money_with_currency }}
+        {%- else -%}
+          {{ price | money }}
+        {%- endif -%}
       </span>
     </div>
     <small class="unit-price caption{% if product.selected_or_first_available_variant.unit_price_measurement == nil %} hidden{% endif %}">
       <span class="visually-hidden">{{ 'products.product.price.unit_price' | t }}</span>
       <span class="price-item price-item--last">
         <span>{{- product.selected_or_first_available_variant.unit_price | money -}}</span>
-        {%- comment -%} <span aria-hidden="true">/</span> {%- endcomment -%}
         <span class="visually-hidden">&nbsp;{{ 'general.accessibility.unit_price_separator' | t }}&nbsp;</span>
         <span>
           {%- if product.selected_or_first_available_variant.unit_price_measurement.reference_value != 1 -%}

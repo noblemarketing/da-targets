@@ -4777,6 +4777,27 @@ p a:not(.button):focus,
   line-height: 1.2;
   margin: 0 0 3px;
 }
+.product-card__price .price__sale {
+  display: none;
+}
+.product-card__price.price--on-sale .price__regular {
+  display: none;
+}
+.product-card__price.price--on-sale .price__sale {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.5rem;
+}
+.product-card__price.price--on-sale .price-item--regular s {
+  text-decoration: line-through;
+  color: var(--color-price-sale-compare, var(--g-color-heading));
+  font-weight: 400;
+  font-size: 0.9em;
+}
+.product-card__price.price--on-sale .price-item--sale {
+  color: var(--color-price-sale, var(--g-main-2));
+}
 .product-card__pricesale {
   color: var(--color-price-sale);
 }

@@ -20,29 +20,7 @@
     </div>
     <div class="product-card__info  pt-3 {% unless product.available %} disabled{% endunless %}">
       <a href="{{ product.url }}" title="{{ product.title }}" class="product-card__name d-block {% if settings.t_product %} text-uppercase {% endif %}">{{ product.title }}</a>
-      <div class="product-card__price {% if product.compare_at_price > product.price %}product-card__pricesale {% endif %}">
-          {%- if product.compare_at_price > product.price -%}
-          {%- if product.price_varies -%}
-          {%- assign sale_price = product.price | money -%}
-          {{ 'products.product.on_sale_from_html' | t: price: sale_price }}
-          {%- else -%}
-          <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
-          {{ product.price | money }}
-          <s class="product-card__regular-price">{{ product.compare_at_price | money }}</s>
-          <span class="visually-hidden">{{ 'products.product.sale_price' | t }}</span>
-          
-          {%- endif -%}
-          {%- else -%}
-          {%- if product.price_varies -%}
-          {%- assign price = product.price | money -%}
-          {{ 'products.product.from_text_html' | t: price: price }}
-          {%- else -%}
-          <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
-          {{ product.price | money }}
-          {%- endif -%}
-  
-          {%- endif -%}
-      </div>
+      {%- render 'price', product: product, use_variant: true, show_badges: false, price_class: 'product-card__price' -%}
       {% unless enablqv %}
       <span class="position-relative link js-grid-cart small {% unless product.available %} disabled {% endunless %}" title="{% if product.available %}{% if product.variants.size > 1 %}Choose Options{% else %}{{ 'products.product.add_to_cart' | t }}{% endif %} {% else %} {{ 'products.product.sold_out' | t }} {% endif %}" data-id="{{ product.selected_or_first_available_variant.id }}" data-product-url="{{ product.url }}" data-has-variants="{{ product.variants.size }}">
         <div class="product-card__loading spinner-{{ settings.loading }}" role="status"></div>

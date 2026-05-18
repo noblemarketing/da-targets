@@ -23,13 +23,26 @@
     assign target = product
   endif
 
+  assign catalog_price = target.price | default: 1999
   assign compare_at_price = target.compare_at_price
-  assign price = target.price | default: 1999
-
   assign on_sale = false
-  if compare_at_price > price
+  assign display_compare = compare_at_price
+  assign display_sale = catalog_price
+
+  if compare_at_price != blank and compare_at_price > catalog_price
     assign on_sale = true
+    assign display_compare = compare_at_price
+    assign display_sale = catalog_price
+  elsif settings.sitewide_sale_enable and settings.sitewide_sale_percent > 0
+    assign on_sale = true
+    assign pct = settings.sitewide_sale_percent
+    assign multiplier = 100 | minus: pct
+    assign display_sale = catalog_price | times: multiplier | divided_by: 100
+    assign display_compare = catalog_price
   endif
+
+  assign price = display_sale
+  assign compare_at_price = display_compare
 -%}
 
 <div class="price
@@ -71,13 +84,15 @@
   {%- if on_sale -%}
     <span class="sr-only">{{ 'products.price.regular_price' | t }}</span>
     <span class="price__sale inline-flex items-center h-auto relative">
-      {%- liquid
-        if settings.currency_code_enabled
-          echo compare_at_price | money_with_currency
-        else
-          echo compare_at_price | money
-        endif
-      -%}
+      <s>
+        {%- liquid
+          if settings.currency_code_enabled
+            echo compare_at_price | money_with_currency
+          else
+            echo compare_at_price | money
+          endif
+        -%}
+      </s>
     </span>
   {%- endif -%}
 
