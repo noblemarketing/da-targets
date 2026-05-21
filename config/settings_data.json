@@ -163,13 +163,13 @@
     "new_label_cl": "#000000",
     "new_label_day": 30,
     "sale_label_enable": true,
-    "sitewide_sale_enable": true,
-    "sitewide_sale_percent": 25,
     "sale_label_text": "OFF",
     "tagsale": "txtandnumber",
     "sale_label_bg": "#ce0707",
     "sale_label_cl": "#ffffff",
     "sale_label_bg_product": "#c70a33",
+    "sitewide_sale_enable": true,
+    "sitewide_sale_percent": 25,
     "label_e1": true,
     "label_text1": "Hot",
     "label_bg1": "#ffffff",
@@ -2438,6 +2438,19 @@
           "color_RPphY8"
         ],
         "settings": {}
+      },
+      "page-affiliate-program": {
+        "type": "page-affiliate-program",
+        "settings": {
+          "hero_image": "shopify://shop_images/DA_Desert-59.jpg",
+          "cta_image": "shopify://shop_images/DA_Desert_web-151.jpg",
+          "hero_heading": "DA TARGETS AFFILIATE PROGRAM",
+          "hero_subheading": "Drive traffic from your website or social channels to da-targets.com and earn money. You'll earn a commission on every purchase made by customers you refer.",
+          "steps_heading": "HOW IT WORKS",
+          "cta_heading": "JOIN THE COMMUNITY",
+          "cta_label": "JOIN NOW",
+          "avantlink_url": ""
+        }
       }
     },
     "content_for_index": [],
