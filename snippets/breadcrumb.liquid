@@ -25,6 +25,13 @@
     assign showBreadcrumb = true
   endif
 
+  if template.name == 'page' and template.suffix == 'affiliate-program'
+    assign showBreadcrumb = false
+  endif
+  if page.handle == 'affiliate-program'
+    assign showBreadcrumb = false
+  endif
+
 -%}
 {%- if settings.enable_breadcrumb and showBreadcrumb -%}
 {% unless template == 'index' or template == 'cart' or template contains blog_page or template contains article_page or template contains collection_page or template contains product_page %}

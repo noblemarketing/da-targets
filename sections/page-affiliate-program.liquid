@@ -55,13 +55,16 @@
     position: absolute;
     inset: 0;
     z-index: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
   }
-  .affiliate-page .affiliate-hero__media img,
-  .affiliate-page .affiliate-cta__media img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
+  .main-content:has(.affiliate-page) {
+    padding: 0;
+  }
+  .main-content:has(.affiliate-page) .g-breadcrumb,
+  body:has(.affiliate-page) .shopify-section:has(.content-block--page) {
+    display: none !important;
   }
   .affiliate-page .affiliate-hero__overlay {
     position: absolute;
@@ -75,9 +78,6 @@
     z-index: 1;
     background: rgba(40, 40, 40, 0.45);
   }
-  .affiliate-page .affiliate-cta__media img {
-    object-position: center center;
-  }
   .affiliate-page .affiliate-hero__content,
   .affiliate-page .affiliate-cta__content {
     position: relative;
@@ -85,12 +85,6 @@
     width: 100%;
     max-width: 900px;
     padding: 72px 24px;
-  }
-  .affiliate-page .affiliate-hero__logo {
-    max-width: 200px;
-    height: auto;
-    margin: 0 auto 24px;
-    display: block;
   }
   .affiliate-page .affiliate-hero__title,
   .affiliate-page .affiliate-cta__title,
@@ -283,36 +277,13 @@
 <div class="affiliate-page" data-section-id="{{ section.id }}" data-section-type="page-affiliate-program">
   {%- comment -%} 1. Hero {%- endcomment -%}
   <section class="affiliate-hero">
-    <div class="affiliate-hero__media" aria-hidden="true">
-      <img
-        src="{{ hero_src }}"
-        alt="{{ hero_alt | escape }}"
-        width="{{ hero_width }}"
-        height="{{ hero_height }}"
-        loading="eager"
-      >
-    </div>
+    <div
+      class="affiliate-hero__media"
+      style="background-image: url('{{ hero_src }}');"
+      aria-hidden="true"
+    ></div>
     <div class="affiliate-hero__overlay" aria-hidden="true"></div>
     <div class="affiliate-hero__content container">
-      {%- if settings.logo_white != blank -%}
-        <img
-          class="affiliate-hero__logo"
-          src="{{ settings.logo_white | image_url: width: 400 }}"
-          alt="{{ shop.name | escape }}"
-          width="{{ settings.logo_white.width }}"
-          height="{{ settings.logo_white.height }}"
-          loading="eager"
-        >
-      {%- elsif settings.logo != blank -%}
-        <img
-          class="affiliate-hero__logo"
-          src="{{ settings.logo | image_url: width: 400 }}"
-          alt="{{ shop.name | escape }}"
-          width="{{ settings.logo.width }}"
-          height="{{ settings.logo.height }}"
-          loading="eager"
-        >
-      {%- endif -%}
       <h1 class="affiliate-hero__title">{{ section.settings.hero_heading | default: 'DA TARGETS AFFILIATE PROGRAM' }}</h1>
       <p class="affiliate-hero__subtitle">{{ section.settings.hero_subheading | default: "Drive traffic from your website or social channels to da-targets.com and earn money. You'll earn a commission on every purchase made by customers you refer." }}</p>
       <a href="{{ avantlink_url }}" class="affiliate-btn" target="_blank" rel="noopener noreferrer">{{ section.settings.cta_label | default: 'JOIN NOW' }}</a>
@@ -400,15 +371,11 @@
 
   {%- comment -%} 5. Bottom CTA {%- endcomment -%}
   <section class="affiliate-cta">
-    <div class="affiliate-cta__media" aria-hidden="true">
-      <img
-        src="{{ cta_src }}"
-        alt="{{ cta_alt | escape }}"
-        width="{{ cta_width }}"
-        height="{{ cta_height }}"
-        loading="lazy"
-      >
-    </div>
+    <div
+      class="affiliate-cta__media"
+      style="background-image: url('{{ cta_src }}');"
+      aria-hidden="true"
+    ></div>
     <div class="affiliate-cta__overlay" aria-hidden="true"></div>
     <div class="affiliate-cta__content container">
       <h2 class="affiliate-cta__title">{{ section.settings.cta_heading | default: 'JOIN THE COMMUNITY' }}</h2>

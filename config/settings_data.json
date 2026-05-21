@@ -102,7 +102,7 @@
     "enable_article": false,
     "enable_collection": true,
     "enable_product": true,
-    "page_breadcrumb": "about-us,about-us-v2",
+    "page_breadcrumb": "about-us,about-us-v2,affiliate-program",
     "color_breadcrumbs": "#000000",
     "color_breadcrumbs_active": "#000000",
     "bg_breadcrumb": "#ffffff",
