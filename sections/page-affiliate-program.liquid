@@ -62,7 +62,10 @@
   .main-content:has(.affiliate-page) {
     padding: 0;
   }
-  .main-content:has(.affiliate-page) .g-breadcrumb,
+  .template-page-affiliate-program .g-breadcrumb,
+  .main-content:has(.affiliate-page) .g-breadcrumb {
+    display: none !important;
+  }
   body:has(.affiliate-page) .shopify-section:has(.content-block--page) {
     display: none !important;
   }
@@ -434,9 +437,10 @@
       "default": "JOIN NOW"
     },
     {
-      "type": "url",
+      "type": "text",
       "id": "avantlink_url",
       "label": "AvantLink join URL",
+      "default": "https://www.avantlink.com/programs/[PROGRAM-ID]/da-targets-affiliate-program/",
       "info": "Replace [PROGRAM-ID] with your live AvantLink program ID."
     }
   ],
