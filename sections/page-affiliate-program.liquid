@@ -1,0 +1,502 @@
+{%- liquid
+  assign avantlink_url = section.settings.avantlink_url | default: 'https://www.avantlink.com/programs/[PROGRAM-ID]/da-targets-affiliate-program/'
+  assign hero_image = section.settings.hero_image
+  assign cta_image = section.settings.cta_image | default: hero_image
+-%}
+
+<style>
+  .affiliate-page {
+    --affiliate-bg: #282828;
+    --affiliate-red: var(--g-main, #ce0707);
+    --affiliate-text: #ffffff;
+    --affiliate-muted: rgba(255, 255, 255, 0.75);
+    color: var(--affiliate-text);
+    background: var(--affiliate-bg);
+  }
+  .affiliate-page .affiliate-hero,
+  .affiliate-page .affiliate-cta {
+    position: relative;
+    min-height: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    background-color: var(--affiliate-bg);
+  }
+  .affiliate-page .affiliate-hero__media,
+  .affiliate-page .affiliate-cta__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  .affiliate-page .affiliate-hero__media img,
+  .affiliate-page .affiliate-cta__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  .affiliate-page .affiliate-hero__overlay,
+  .affiliate-page .affiliate-cta__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: rgba(40, 40, 40, 0.72);
+  }
+  .affiliate-page .affiliate-hero__content,
+  .affiliate-page .affiliate-cta__content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 900px;
+    padding: 72px 24px;
+  }
+  .affiliate-page .affiliate-hero__logo {
+    max-width: 200px;
+    height: auto;
+    margin: 0 auto 24px;
+    display: block;
+  }
+  .affiliate-page .affiliate-hero__title,
+  .affiliate-page .affiliate-cta__title,
+  .affiliate-page .affiliate-steps__title,
+  .affiliate-page .affiliate-columns__heading {
+    font-family: var(--g-font-1);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1.15;
+    margin: 0 0 16px;
+    color: var(--affiliate-text);
+  }
+  .affiliate-page .affiliate-hero__title {
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+  }
+  .affiliate-page .affiliate-hero__subtitle,
+  .affiliate-page .affiliate-cta__subtitle {
+    font-size: clamp(1rem, 2vw, 1.125rem);
+    line-height: 1.6;
+    color: var(--affiliate-muted);
+    margin: 0 auto 28px;
+    max-width: 720px;
+  }
+  .affiliate-page .affiliate-btn {
+    display: inline-block;
+    padding: 14px 36px;
+    font-family: var(--g-font-1);
+    font-weight: 700;
+    font-size: 0.875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #fff;
+    background: var(--affiliate-red);
+    border: 2px solid var(--affiliate-red);
+    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  }
+  .affiliate-page .affiliate-btn:hover,
+  .affiliate-page .affiliate-btn:focus {
+    color: #fff;
+    background: #9a1818;
+    border-color: #9a1818;
+    text-decoration: none;
+  }
+  .affiliate-page .affiliate-trust-bar {
+    background: var(--affiliate-bg);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 10px 0;
+    overflow: hidden;
+  }
+  .affiliate-page .affiliate-trust-bar .text-scroll {
+    grid: auto / auto-flow max-content;
+    justify-content: center;
+    display: grid;
+    overflow: hidden;
+  }
+  .affiliate-page .affiliate-trust-bar .textscroll-item {
+    grid: auto / auto-flow auto max-content;
+    place-items: center;
+    display: grid;
+    animation-duration: 18s;
+    white-space: nowrap;
+  }
+  .affiliate-page .affiliate-trust-bar .trust-ticker-text {
+    font-family: var(--g-font-1);
+    font-weight: 600;
+    font-size: 0.8125rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--affiliate-text);
+    padding: 0 2rem;
+  }
+  .affiliate-page .affiliate-trust-bar .trust-ticker-dot {
+    color: var(--affiliate-red);
+    padding: 0 0.5rem;
+  }
+  .affiliate-page .affiliate-stats {
+    background: var(--affiliate-bg);
+    padding: 14px 0;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .affiliate-page .affiliate-stats .text-scroll {
+    grid: auto / auto-flow max-content;
+    justify-content: center;
+    display: grid;
+    overflow: hidden;
+  }
+  .affiliate-page .affiliate-stats .textscroll-item {
+    grid: auto / auto-flow auto max-content;
+    place-items: center;
+    display: grid;
+    animation-duration: 22s;
+    white-space: nowrap;
+  }
+  .affiliate-page .affiliate-stats .stats-ticker-text {
+    font-family: var(--g-font-1);
+    font-weight: 700;
+    font-size: 0.9375rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--affiliate-text);
+    padding: 0 2.5rem;
+  }
+  .affiliate-page .affiliate-stats .stats-ticker-text--accent {
+    color: var(--affiliate-red);
+  }
+  .affiliate-page .affiliate-stats .stats-ticker-sep {
+    color: rgba(255, 255, 255, 0.45);
+    padding: 0 0.25rem;
+  }
+  .affiliate-page .affiliate-steps {
+    background: #fff;
+    color: #282828;
+    padding: 64px 0;
+  }
+  .affiliate-page .affiliate-steps__title {
+    color: #282828;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .affiliate-page .affiliate-step {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 20px 28px;
+    align-items: start;
+    padding: 28px 0;
+    border-bottom: 1px solid rgba(40, 40, 40, 0.15);
+  }
+  .affiliate-page .affiliate-step:last-child {
+    border-bottom: 0;
+  }
+  .affiliate-page .affiliate-step__num {
+    font-family: var(--g-font-1);
+    font-weight: 700;
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--affiliate-red);
+  }
+  .affiliate-page .affiliate-step__text {
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    margin: 0;
+    padding-top: 6px;
+  }
+  .affiliate-page .affiliate-columns {
+    background: var(--affiliate-bg);
+    padding: 64px 0 72px;
+  }
+  .affiliate-page .affiliate-columns__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  @media (min-width: 768px) {
+    .affiliate-page .affiliate-columns__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+    .affiliate-page .affiliate-hero,
+    .affiliate-page .affiliate-cta {
+      min-height: 520px;
+    }
+  }
+  .affiliate-page .affiliate-columns__heading {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--affiliate-red);
+  }
+  .affiliate-page .affiliate-columns__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .affiliate-page .affiliate-columns__list li {
+    position: relative;
+    padding-left: 18px;
+    margin-bottom: 12px;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--affiliate-muted);
+  }
+  .affiliate-page .affiliate-columns__list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 6px;
+    height: 6px;
+    background: var(--affiliate-red);
+    transform: rotate(45deg);
+  }
+  .affiliate-page .affiliate-columns__list a {
+    color: var(--affiliate-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .affiliate-page .affiliate-columns__list a:hover {
+    color: var(--affiliate-red);
+  }
+  .affiliate-page .affiliate-cta__title {
+    font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  }
+  .affiliate-page .affiliate-tagline {
+    margin-top: 20px;
+    font-family: var(--g-font-1);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--affiliate-muted);
+  }
+</style>
+
+<div class="affiliate-page" data-section-id="{{ section.id }}" data-section-type="page-affiliate-program">
+  {%- comment -%} 1. Hero {%- endcomment -%}
+  <section class="affiliate-hero">
+    <div class="affiliate-hero__media" aria-hidden="true">
+      {%- if hero_image != blank -%}
+        <img
+          src="{{ hero_image | image_url: width: 1920 }}"
+          alt="{{ hero_image.alt | default: 'DA Targets affiliate program' | escape }}"
+          width="{{ hero_image.width }}"
+          height="{{ hero_image.height }}"
+          loading="eager"
+        >
+      {%- endif -%}
+    </div>
+    <div class="affiliate-hero__overlay" aria-hidden="true"></div>
+    <div class="affiliate-hero__content container">
+      {%- if settings.logo_white != blank -%}
+        <img
+          class="affiliate-hero__logo"
+          src="{{ settings.logo_white | image_url: width: 400 }}"
+          alt="{{ shop.name | escape }}"
+          width="{{ settings.logo_white.width }}"
+          height="{{ settings.logo_white.height }}"
+          loading="eager"
+        >
+      {%- elsif settings.logo != blank -%}
+        <img
+          class="affiliate-hero__logo"
+          src="{{ settings.logo | image_url: width: 400 }}"
+          alt="{{ shop.name | escape }}"
+          width="{{ settings.logo.width }}"
+          height="{{ settings.logo.height }}"
+          loading="eager"
+        >
+      {%- endif -%}
+      <h1 class="affiliate-hero__title">{{ section.settings.hero_heading | default: 'DA TARGETS AFFILIATE PROGRAM' }}</h1>
+      <p class="affiliate-hero__subtitle">{{ section.settings.hero_subheading | default: "Drive traffic from your website or social channels to da-targets.com and earn money. You'll earn a commission on every purchase made by customers you refer." }}</p>
+      <a href="{{ avantlink_url }}" class="affiliate-btn" target="_blank" rel="noopener noreferrer">{{ section.settings.cta_label | default: 'JOIN NOW' }}</a>
+      <p class="affiliate-tagline">TRUSTED BY THE MILITARY. PERFECT FOR YOUR NEXT RANGE DAY.</p>
+    </div>
+  </section>
+
+  {%- comment -%} Trust marquee {%- endcomment -%}
+  <div class="affiliate-trust-bar">
+    <div class="text-scroll">
+      {%- for i in (1..8) -%}
+        <span class="textscroll-item anim-loop-left">
+          <span class="trust-ticker-text">MADE IN THE USA</span>
+          <span class="trust-ticker-dot" aria-hidden="true">·</span>
+          <span class="trust-ticker-text">PATENTED TECHNOLOGY</span>
+          <span class="trust-ticker-dot" aria-hidden="true">·</span>
+        </span>
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {%- comment -%} 2. Stats ticker {%- endcomment -%}
+  <div class="affiliate-stats">
+    <div class="text-scroll">
+      {%- for i in (1..8) -%}
+        <span class="textscroll-item anim-loop-right">
+          <span class="stats-ticker-text stats-ticker-text--accent">15% COMMISSION ON SALES</span>
+          <span class="stats-ticker-sep" aria-hidden="true">•</span>
+          <span class="stats-ticker-text">30-DAY COOKIE DURATION</span>
+          <span class="stats-ticker-sep" aria-hidden="true">•</span>
+        </span>
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {%- comment -%} 3. How it works {%- endcomment -%}
+  <section class="affiliate-steps">
+    <div class="container">
+      <h2 class="affiliate-steps__title">{{ section.settings.steps_heading | default: 'HOW IT WORKS' }}</h2>
+      <div class="affiliate-steps__list">
+        <div class="affiliate-step">
+          <span class="affiliate-step__num">1</span>
+          <p class="affiliate-step__text">Apply to AvantLink, DA Targets' affiliate network partner.</p>
+        </div>
+        <div class="affiliate-step">
+          <span class="affiliate-step__num">2</span>
+          <p class="affiliate-step__text">Complete the application for the DA Targets program.</p>
+        </div>
+        <div class="affiliate-step">
+          <span class="affiliate-step__num">3</span>
+          <p class="affiliate-step__text">Once approved, share your DA Targets affiliate link on your site or social channels.</p>
+        </div>
+        <div class="affiliate-step">
+          <span class="affiliate-step__num">4</span>
+          <p class="affiliate-step__text">Send customers to da-targets.com through your links and get paid for completed sales via AvantLink.</p>
+        </div>
+        <div class="affiliate-step">
+          <span class="affiliate-step__num">5</span>
+          <p class="affiliate-step__text">Track your clicks and commissions through the AvantLink interface.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} 4. Three columns {%- endcomment -%}
+  <section class="affiliate-columns">
+    <div class="container">
+      <div class="affiliate-columns__grid">
+        <div class="affiliate-columns__col">
+          <h3 class="affiliate-columns__heading">QUALIFYING AFFILIATE SITES</h3>
+          <ul class="affiliate-columns__list">
+            <li>Shooting sports content creators</li>
+            <li>Firearms &amp; outdoor bloggers</li>
+            <li>YouTube channels &amp; podcasters</li>
+            <li>Product review sites</li>
+            <li>Social media influencers</li>
+            <li>Military &amp; tactical lifestyle sites</li>
+            <li>Not sure if you qualify? <a href="{{ pages['contact'].url | default: '/pages/contact' }}">Contact us</a>.</li>
+          </ul>
+        </div>
+        <div class="affiliate-columns__col">
+          <h3 class="affiliate-columns__heading">PROGRAM DETAILS</h3>
+          <ul class="affiliate-columns__list">
+            <li>15% commission on all sales</li>
+            <li>30-day cookie duration</li>
+            <li>Free shipping on orders over $250</li>
+            <li>Patented, one-of-a-kind products with strong brand recognition</li>
+            <li>Affiliate tools via AvantLink: banner ads, data feeds, and more</li>
+            <li>Dedicated affiliate manager</li>
+          </ul>
+        </div>
+        <div class="affiliate-columns__col">
+          <h3 class="affiliate-columns__heading">DA TARGETS PERKS</h3>
+          <ul class="affiliate-columns__list">
+            <li>Direct access to a Program Manager</li>
+            <li>Trusted by military, law enforcement, and everyday shooters</li>
+            <li>Rated 4.8/5 across hundreds of verified customer reviews</li>
+            <li>Made in the USA — strong brand trust and conversion rates</li>
+            <li>New products released regularly</li>
+            <li>Patented technology competitors can't match</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} 5. Bottom CTA {%- endcomment -%}
+  <section class="affiliate-cta">
+    <div class="affiliate-cta__media" aria-hidden="true">
+      {%- if cta_image != blank -%}
+        <img
+          src="{{ cta_image | image_url: width: 1920 }}"
+          alt=""
+          width="{{ cta_image.width }}"
+          height="{{ cta_image.height }}"
+          loading="lazy"
+        >
+      {%- endif -%}
+    </div>
+    <div class="affiliate-cta__overlay" aria-hidden="true"></div>
+    <div class="affiliate-cta__content container">
+      <h2 class="affiliate-cta__title">{{ section.settings.cta_heading | default: 'JOIN THE COMMUNITY' }}</h2>
+      <a href="{{ avantlink_url }}" class="affiliate-btn" target="_blank" rel="noopener noreferrer">{{ section.settings.cta_label | default: 'JOIN NOW' }}</a>
+      <p class="affiliate-tagline">MADE IN THE USA · PATENTED TECHNOLOGY</p>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Affiliate Program",
+  "tag": "section",
+  "class": "affiliate-program-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero & CTA background image",
+      "info": "Upload DA_Desert-28.jpg to Shopify Files and select it here."
+    },
+    {
+      "type": "image_picker",
+      "id": "cta_image",
+      "label": "Bottom CTA image (optional)",
+      "info": "Leave blank to reuse the hero image."
+    },
+    {
+      "type": "text",
+      "id": "hero_heading",
+      "label": "Hero heading",
+      "default": "DA TARGETS AFFILIATE PROGRAM"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_subheading",
+      "label": "Hero subheading",
+      "default": "Drive traffic from your website or social channels to da-targets.com and earn money. You'll earn a commission on every purchase made by customers you refer."
+    },
+    {
+      "type": "text",
+      "id": "steps_heading",
+      "label": "How it works heading",
+      "default": "HOW IT WORKS"
+    },
+    {
+      "type": "text",
+      "id": "cta_heading",
+      "label": "Bottom CTA heading",
+      "default": "JOIN THE COMMUNITY"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button label",
+      "default": "JOIN NOW"
+    },
+    {
+      "type": "url",
+      "id": "avantlink_url",
+      "label": "AvantLink join URL",
+      "info": "Replace [PROGRAM-ID] with your live AvantLink program ID."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Affiliate Program"
+    }
+  ]
+}
+{% endschema %}
