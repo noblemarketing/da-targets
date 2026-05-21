@@ -1,7 +1,33 @@
 {%- liquid
   assign avantlink_url = section.settings.avantlink_url | default: 'https://www.avantlink.com/programs/[PROGRAM-ID]/da-targets-affiliate-program/'
   assign hero_image = section.settings.hero_image
-  assign cta_image = section.settings.cta_image | default: hero_image
+  assign cta_image = section.settings.cta_image
+  assign default_hero_asset = 'affiliate-hero-desert.png' | asset_url
+  assign default_cta_asset = 'affiliate-cta-community.png' | asset_url
+  assign hero_alt = 'DA Targets silhouette target at a desert shooting range'
+  assign cta_alt = 'Shooter at a desert range with DA Targets branded apparel'
+
+  if hero_image != blank
+    assign hero_src = hero_image | image_url: width: 1920
+    assign hero_alt = hero_image.alt | default: hero_alt
+    assign hero_width = hero_image.width
+    assign hero_height = hero_image.height
+  else
+    assign hero_src = default_hero_asset
+    assign hero_width = 1920
+    assign hero_height = 1080
+  endif
+
+  if cta_image != blank
+    assign cta_src = cta_image | image_url: width: 1920
+    assign cta_alt = cta_image.alt | default: cta_alt
+    assign cta_width = cta_image.width
+    assign cta_height = cta_image.height
+  else
+    assign cta_src = default_cta_asset
+    assign cta_width = 1920
+    assign cta_height = 1080
+  endif
 -%}
 
 <style>
@@ -37,12 +63,20 @@
     object-fit: cover;
     object-position: center;
   }
-  .affiliate-page .affiliate-hero__overlay,
-  .affiliate-page .affiliate-cta__overlay {
+  .affiliate-page .affiliate-hero__overlay {
     position: absolute;
     inset: 0;
     z-index: 1;
     background: rgba(40, 40, 40, 0.72);
+  }
+  .affiliate-page .affiliate-cta__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: rgba(40, 40, 40, 0.45);
+  }
+  .affiliate-page .affiliate-cta__media img {
+    object-position: center center;
   }
   .affiliate-page .affiliate-hero__content,
   .affiliate-page .affiliate-cta__content {
@@ -102,44 +136,11 @@
     border-color: #9a1818;
     text-decoration: none;
   }
-  .affiliate-page .affiliate-trust-bar {
-    background: var(--affiliate-bg);
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-    padding: 10px 0;
-    overflow: hidden;
-  }
-  .affiliate-page .affiliate-trust-bar .text-scroll {
-    grid: auto / auto-flow max-content;
-    justify-content: center;
-    display: grid;
-    overflow: hidden;
-  }
-  .affiliate-page .affiliate-trust-bar .textscroll-item {
-    grid: auto / auto-flow auto max-content;
-    place-items: center;
-    display: grid;
-    animation-duration: 18s;
-    white-space: nowrap;
-  }
-  .affiliate-page .affiliate-trust-bar .trust-ticker-text {
-    font-family: var(--g-font-1);
-    font-weight: 600;
-    font-size: 0.8125rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--affiliate-text);
-    padding: 0 2rem;
-  }
-  .affiliate-page .affiliate-trust-bar .trust-ticker-dot {
-    color: var(--affiliate-red);
-    padding: 0 0.5rem;
-  }
   .affiliate-page .affiliate-stats {
-    background: var(--affiliate-bg);
-    padding: 14px 0;
+    background: var(--affiliate-red);
+    color: #ffffff;
+    padding: 8px 0;
     overflow: hidden;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
   .affiliate-page .affiliate-stats .text-scroll {
     grid: auto / auto-flow max-content;
@@ -151,24 +152,28 @@
     grid: auto / auto-flow auto max-content;
     place-items: center;
     display: grid;
-    animation-duration: 22s;
+    animation-duration: 18s;
     white-space: nowrap;
   }
-  .affiliate-page .affiliate-stats .stats-ticker-text {
+  .affiliate-page .affiliate-stats .affiliate-stats-ticker__phrase {
     font-family: var(--g-font-1);
     font-weight: 700;
-    font-size: 0.9375rem;
-    letter-spacing: 0.1em;
+    font-style: italic;
+    font-size: clamp(1.35rem, 3.5vw, 2.25rem);
+    line-height: 1.1;
+    letter-spacing: 0.02em;
     text-transform: uppercase;
-    color: var(--affiliate-text);
-    padding: 0 2.5rem;
+    margin: 0;
+    padding: 0 0.2rem;
+    display: inline-flex;
+    align-items: center;
   }
-  .affiliate-page .affiliate-stats .stats-ticker-text--accent {
-    color: var(--affiliate-red);
+  .affiliate-page .affiliate-stats .type-solid {
+    color: #ffffff;
   }
-  .affiliate-page .affiliate-stats .stats-ticker-sep {
-    color: rgba(255, 255, 255, 0.45);
-    padding: 0 0.25rem;
+  .affiliate-page .affiliate-stats .type-outline {
+    -webkit-text-stroke: 1px #ffffff;
+    -webkit-text-fill-color: transparent;
   }
   .affiliate-page .affiliate-steps {
     background: #fff;
@@ -279,15 +284,13 @@
   {%- comment -%} 1. Hero {%- endcomment -%}
   <section class="affiliate-hero">
     <div class="affiliate-hero__media" aria-hidden="true">
-      {%- if hero_image != blank -%}
-        <img
-          src="{{ hero_image | image_url: width: 1920 }}"
-          alt="{{ hero_image.alt | default: 'DA Targets affiliate program' | escape }}"
-          width="{{ hero_image.width }}"
-          height="{{ hero_image.height }}"
-          loading="eager"
-        >
-      {%- endif -%}
+      <img
+        src="{{ hero_src }}"
+        alt="{{ hero_alt | escape }}"
+        width="{{ hero_width }}"
+        height="{{ hero_height }}"
+        loading="eager"
+      >
     </div>
     <div class="affiliate-hero__overlay" aria-hidden="true"></div>
     <div class="affiliate-hero__content container">
@@ -317,29 +320,13 @@
     </div>
   </section>
 
-  {%- comment -%} Trust marquee {%- endcomment -%}
-  <div class="affiliate-trust-bar">
+  {%- comment -%} 2. Stats ticker (matches site scrolling-text: red bar, solid + outline) {%- endcomment -%}
+  <div class="affiliate-stats scroling-section">
     <div class="text-scroll">
-      {%- for i in (1..8) -%}
+      {%- for i in (1..10) -%}
         <span class="textscroll-item anim-loop-left">
-          <span class="trust-ticker-text">MADE IN THE USA</span>
-          <span class="trust-ticker-dot" aria-hidden="true">·</span>
-          <span class="trust-ticker-text">PATENTED TECHNOLOGY</span>
-          <span class="trust-ticker-dot" aria-hidden="true">·</span>
-        </span>
-      {%- endfor -%}
-    </div>
-  </div>
-
-  {%- comment -%} 2. Stats ticker {%- endcomment -%}
-  <div class="affiliate-stats">
-    <div class="text-scroll">
-      {%- for i in (1..8) -%}
-        <span class="textscroll-item anim-loop-right">
-          <span class="stats-ticker-text stats-ticker-text--accent">15% COMMISSION ON SALES</span>
-          <span class="stats-ticker-sep" aria-hidden="true">•</span>
-          <span class="stats-ticker-text">30-DAY COOKIE DURATION</span>
-          <span class="stats-ticker-sep" aria-hidden="true">•</span>
+          <span class="affiliate-stats-ticker__phrase type-solid">15% COMMISSION ON SALES</span>
+          <span class="affiliate-stats-ticker__phrase type-outline">30-DAY COOKIE DURATION</span>
         </span>
       {%- endfor -%}
     </div>
@@ -393,23 +380,18 @@
         <div class="affiliate-columns__col">
           <h3 class="affiliate-columns__heading">PROGRAM DETAILS</h3>
           <ul class="affiliate-columns__list">
-            <li>15% commission on all sales</li>
-            <li>30-day cookie duration</li>
-            <li>Free shipping on orders over $250</li>
-            <li>Patented, one-of-a-kind products with strong brand recognition</li>
-            <li>Affiliate tools via AvantLink: banner ads, data feeds, and more</li>
-            <li>Dedicated affiliate manager</li>
+            <li>Competitive commission rate on all sales</li>
+            <li>Premium commission rates on top performing affiliates and placements</li>
+            <li>30 day cookie duration</li>
+            <li>Affiliate Tools offered by Avantlink cover everything from Banner Ads to Datafeeds and more!</li>
           </ul>
         </div>
         <div class="affiliate-columns__col">
           <h3 class="affiliate-columns__heading">DA TARGETS PERKS</h3>
           <ul class="affiliate-columns__list">
-            <li>Direct access to a Program Manager</li>
-            <li>Trusted by military, law enforcement, and everyday shooters</li>
-            <li>Rated 4.8/5 across hundreds of verified customer reviews</li>
-            <li>Made in the USA — strong brand trust and conversion rates</li>
-            <li>New products released regularly</li>
-            <li>Patented technology competitors can't match</li>
+            <li>You'll have access to a Program Manager to work directly with you and your account.</li>
+            <li>Our Guaranteed Low Price program offered to our customers helps maintain a great conversion rate.</li>
+            <li>Regular sales and customer discount promotions</li>
           </ul>
         </div>
       </div>
@@ -419,15 +401,13 @@
   {%- comment -%} 5. Bottom CTA {%- endcomment -%}
   <section class="affiliate-cta">
     <div class="affiliate-cta__media" aria-hidden="true">
-      {%- if cta_image != blank -%}
-        <img
-          src="{{ cta_image | image_url: width: 1920 }}"
-          alt=""
-          width="{{ cta_image.width }}"
-          height="{{ cta_image.height }}"
-          loading="lazy"
-        >
-      {%- endif -%}
+      <img
+        src="{{ cta_src }}"
+        alt="{{ cta_alt | escape }}"
+        width="{{ cta_width }}"
+        height="{{ cta_height }}"
+        loading="lazy"
+      >
     </div>
     <div class="affiliate-cta__overlay" aria-hidden="true"></div>
     <div class="affiliate-cta__content container">
@@ -447,14 +427,14 @@
     {
       "type": "image_picker",
       "id": "hero_image",
-      "label": "Hero & CTA background image",
-      "info": "Upload DA_Desert-28.jpg to Shopify Files and select it here."
+      "label": "Hero background image",
+      "info": "Optional. Leave blank to use the default desert target image bundled with the theme."
     },
     {
       "type": "image_picker",
       "id": "cta_image",
-      "label": "Bottom CTA image (optional)",
-      "info": "Leave blank to reuse the hero image."
+      "label": "Join the Community background image",
+      "info": "Optional. Leave blank to use the default shooter at range image bundled with the theme."
     },
     {
       "type": "text",
