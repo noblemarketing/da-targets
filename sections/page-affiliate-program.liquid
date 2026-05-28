@@ -1,5 +1,5 @@
 {%- liquid
-  assign avantlink_url = section.settings.avantlink_url | default: 'https://www.avantlink.com/programs/[PROGRAM-ID]/da-targets-affiliate-program/'
+  assign avantlink_url = section.settings.avantlink_url | default: 'https://www.avantlink.com/programs/40117/'
   assign hero_image = section.settings.hero_image
   assign cta_image = section.settings.cta_image
   assign default_hero_asset = 'affiliate-hero-desert.png' | asset_url
@@ -440,8 +440,8 @@
       "type": "text",
       "id": "avantlink_url",
       "label": "AvantLink join URL",
-      "default": "https://www.avantlink.com/programs/[PROGRAM-ID]/da-targets-affiliate-program/",
-      "info": "Replace [PROGRAM-ID] with your live AvantLink program ID."
+      "default": "https://www.avantlink.com/programs/40117/",
+      "info": "DA Targets program page on AvantLink (merchant 40117). Used for JOIN NOW buttons."
     }
   ],
   "presets": [
