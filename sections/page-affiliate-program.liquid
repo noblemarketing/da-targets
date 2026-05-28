@@ -1,5 +1,6 @@
 {%- liquid
   assign avantlink_url = section.settings.avantlink_url | default: 'https://www.avantlink.com/programs/40117/'
+  assign avantlink_signup_url = section.settings.avantlink_signup_url | default: 'https://www.avantlink.com/signup/publisher-united-states/?merchant=40117'
   assign hero_image = section.settings.hero_image
   assign cta_image = section.settings.cta_image
   assign default_hero_asset = 'affiliate-hero-desert.png' | asset_url
@@ -207,6 +208,15 @@
     margin: 0;
     padding-top: 6px;
   }
+  .affiliate-page .affiliate-step__link {
+    color: var(--affiliate-red);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .affiliate-page .affiliate-step__link:hover {
+    color: #9a1818;
+  }
   .affiliate-page .affiliate-columns {
     background: var(--affiliate-bg);
     padding: 64px 0 72px;
@@ -313,7 +323,10 @@
       <div class="affiliate-steps__list">
         <div class="affiliate-step">
           <span class="affiliate-step__num">1</span>
-          <p class="affiliate-step__text">Apply to AvantLink, DA Targets' affiliate network partner.</p>
+          <p class="affiliate-step__text">
+            Apply to AvantLink, DA Targets' affiliate network partner.
+            <a href="{{ avantlink_signup_url }}" class="affiliate-step__link" target="_blank" rel="noopener noreferrer">Sign up on AvantLink</a>
+          </p>
         </div>
         <div class="affiliate-step">
           <span class="affiliate-step__num">2</span>
@@ -439,9 +452,16 @@
     {
       "type": "text",
       "id": "avantlink_url",
-      "label": "AvantLink join URL",
+      "label": "AvantLink program page URL",
       "default": "https://www.avantlink.com/programs/40117/",
       "info": "DA Targets program page on AvantLink (merchant 40117). Used for JOIN NOW buttons."
+    },
+    {
+      "type": "text",
+      "id": "avantlink_signup_url",
+      "label": "AvantLink publisher signup URL",
+      "default": "https://www.avantlink.com/signup/publisher-united-states/?merchant=40117",
+      "info": "Used in step 1 (How it works) after the AvantLink intro sentence."
     }
   ],
   "presets": [
