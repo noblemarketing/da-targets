@@ -13,7 +13,8 @@
   -%}
 <div class="{{ section.id }} popupnew-{{ section.id }} {{ pnew_style }}"  
   data-section-id="{{ section.id }}" 
-  data-section-type="popupnewletter">
+  data-section-type="popupnewletter"
+  data-cookie-minutes="{{ section.settings.pnewletter_time }}">
 
   <div class="modal fade" id="jsPopupNewsletter{{ section.id }}" role="dialog" aria-hidden="true" data-delay="{{ section.settings.pnewletter_time_delay }}">
     <div class="modal-dialog modal-dialog--newsletter modal-dialog-centered" role="document">

@@ -97,9 +97,7 @@
       </main>
     {%- sections 'footer-group' -%}
      {%- liquid
-      if template == 'index' or request.design_mode
       section 'pnewsletter'
-      endif
       section 'product-suggest'
       section 'cookie-policy'
       section 'custom-color'

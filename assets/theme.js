@@ -5582,7 +5582,8 @@ theme.popupNewletter = (function(){
       var $popupNewsletter = $(this.selectors.formSection),
           $newsletterForm = $(this.selectors.formSection).find("form"),
           date = new Date(),
-          minutes = theme.timePopupNewsletter;
+          sectionCookieMinutes = parseInt(this.$container.attr('data-cookie-minutes'), 10),
+          minutes = sectionCookieMinutes > 0 ? sectionCookieMinutes : theme.timePopupNewsletter;
           minutesdelay = $popupNewsletter.attr('data-delay');
       if ($popupNewsletter.length === 1){
         date.setTime(date.getTime() + (minutes * 60 * 1000));
