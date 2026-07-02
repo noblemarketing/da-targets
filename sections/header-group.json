@@ -26,7 +26,7 @@
         "item_XeqLRX": {
           "type": "item",
           "settings": {
-            "code": "free shipping on all orders over $250!",
+            "code": "free shipping on all orders!",
             "image": "shopify://shop_images/shipping.png",
             "text_style": "solid"
           }
