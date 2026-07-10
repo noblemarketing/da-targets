@@ -16,9 +16,9 @@
       "blocks": {
         "item_GmfjyH": {
           "type": "item",
-          "name": "Shot 10",
+          "name": "Promo",
           "settings": {
-            "code": "250 years of freedom- 25% off sitewide",
+            "code": "Christmas in July- 25% off sitewide",
             "image": "shopify://shop_images/Sale_58a43350-757f-415c-9799-160576335c9c.png",
             "text_style": "solid"
           }
