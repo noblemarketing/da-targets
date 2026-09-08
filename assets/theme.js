@@ -4945,7 +4945,9 @@ function updateVariantSelection($selector, product) {
     $addButton.data('variant-id', selectedVariant.id);
     
     if (selectedVariant.available) {
-      $addButton.prop('disabled', false).text('Add to Cart - $' + (selectedVariant.price / 100).toFixed(2));
+      var prices = theme.variantDisplayPrices(selectedVariant);
+      var priceText = theme.Currency.formatMoney(prices.sale, theme.moneyFormat);
+      $addButton.prop('disabled', false).text('Add to Cart - ' + priceText);
     } else {
       $addButton.prop('disabled', true).text('Sold Out');
     }
