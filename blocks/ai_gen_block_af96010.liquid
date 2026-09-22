@@ -214,7 +214,7 @@
           {{ block.settings.subtext }}
         </div>
 
-        {%- form 'customer', id: 'ai-newsletter-form-' | append: ai_gen_id -%}
+        {%- form ai_gen_id -%}
           <input type="hidden" name="contact[tags]" value="newsletter">
           <div class="ai-newsletter-popup-form-{{ ai_gen_id }}">
             <input
@@ -639,3 +639,13 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- form 'customer', id: 'ai-newsletter-form-' | append: ai_gen_id -%}"
+  to: "{%- form ai_gen_id -%}"
+  position: 6419..6441
+{% endcomment %}

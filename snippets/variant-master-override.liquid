@@ -26,7 +26,7 @@
     if product.metafields.custom.variant_labels[option_key] != blank
       assign final_label = product.metafields.custom.variant_labels[option_key]
     else
-      case option.name | downcase
+      case option.name
         when 'color'
           if product.metafields.custom.color_label != blank
             assign final_label = product.metafields.custom.color_label
@@ -171,4 +171,13 @@
     endif
   endif
 -%}
-{{ final_output | strip }} 
+{{ final_output | strip }} {%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "      case option.name | downcase"
+  to: "      case option.name"
+  position: 986..1008
+{%- endcomment -%}
