@@ -18,13 +18,14 @@
           "type": "item",
           "name": "Promo",
           "settings": {
-            "code": "Fall Sale- 25% off sitewide",
+            "code": "free shipping on orders over 200.00",
             "image": "shopify://shop_images/Sale_58a43350-757f-415c-9799-160576335c9c.png",
             "text_style": "solid"
           }
         },
         "item_XeqLRX": {
           "type": "item",
+          "disabled": true,
           "settings": {
             "code": "free shipping on all orders!",
             "image": "shopify://shop_images/shipping.png",
