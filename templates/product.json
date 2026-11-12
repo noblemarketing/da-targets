@@ -34,11 +34,6 @@
           "type": "separator",
           "settings": {}
         },
-        "globo_product_options_app_block_NDHB6f": {
-          "type": "shopify://apps/globo-product-options/blocks/app-block/fdc9fad5-1a0f-4bd4-9c8a-1af6a6eef6b8",
-          "disabled": true,
-          "settings": {}
-        },
         "8288910a-1ad6-47df-b127-118bc1d2ce24": {
           "type": "buttons",
           "settings": {
@@ -186,7 +181,6 @@
         "judge_me_reviews_preview_badge_mwBbkD",
         "1affb493-1e14-4893-9876-be8d348ee475",
         "ff32ea77-bcea-43d3-8e38-55894c9d938a",
-        "globo_product_options_app_block_NDHB6f",
         "8288910a-1ad6-47df-b127-118bc1d2ce24",
         "salepoint_grid_FCeGkR",
         "bf089f50-667c-4417-a84a-9478625741a1",
@@ -403,7 +397,7 @@
           "settings": {
             "bgblock": "rgba(0,0,0,0)",
             "title": "Fast Free Shipping",
-            "description": "Get free shipping on all orders!",
+            "description": "Get free shipping on orders over $200!",
             "icon": "<i class=\"icon-package\"></i>"
           }
         },
@@ -538,7 +532,7 @@
         "2352b9c6-39ce-4ee2-809b-797a7430f4d9": {
           "type": "paragraph",
           "settings": {
-            "subtext": "★★★★★ 500+ Reviews"
+            "subtext": ""
           }
         },
         "68824fd8-5645-4fc3-9b30-ba506d567226": {
