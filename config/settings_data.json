@@ -2193,8 +2193,8 @@
           "pnew_style": "pnew_style-1",
           "pnew-width": 850,
           "pnew-height": 480,
-          "pnewletter_time_delay": 3,
-          "pnewletter_time": 20,
+          "pnewletter_time_delay": 100,
+          "pnewletter_time": 900,
           "pnewletter_background": "#f5f5f5",
           "pnewletter_bgimage": "shopify://shop_images/2_8bf3526b-419c-4aa5-adee-0c62abc79203.jpg",
           "pnewletter_title": "Save 10% on your first order",
@@ -2461,18 +2461,8 @@
         "disabled": false,
         "settings": {}
       },
-      "12739210202647819536": {
-        "type": "shopify://apps/hotjar-install/blocks/global-api-events/2903e4ea-7615-463e-8b60-582f487dac4f",
-        "disabled": false,
-        "settings": {}
-      },
-      "8669066016853369741": {
-        "type": "shopify://apps/hotjar-install/blocks/global/2903e4ea-7615-463e-8b60-582f487dac4f",
-        "disabled": false,
-        "settings": {}
-      },
-      "3720565183479497137": {
-        "type": "shopify://apps/globo-product-options/blocks/app-embed-block/fdc9fad5-1a0f-4bd4-9c8a-1af6a6eef6b8",
+      "855628211100114053": {
+        "type": "shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507",
         "disabled": false,
         "settings": {}
       }
