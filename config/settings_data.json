@@ -2189,7 +2189,7 @@
       "pnewsletter": {
         "type": "pnewsletter",
         "settings": {
-          "pnewletter_enable": true,
+          "pnewletter_enable": false,
           "pnew_style": "pnew_style-1",
           "pnew-width": 850,
           "pnew-height": 480,
