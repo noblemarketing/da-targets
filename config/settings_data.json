@@ -655,6 +655,7 @@
           "image_ikLT3h": {
             "type": "image",
             "name": "Black Friday",
+            "disabled": true,
             "settings": {
               "image": "shopify://shop_images/1_5e079b66-4685-4a97-ae6b-11e8a192832e.jpg",
               "image_mobile": "shopify://shop_images/30_off_sitewide.jpg",
@@ -667,11 +668,11 @@
               "opacity_overlay": 0.4,
               "slide_toptitle": "",
               "slide_toptitle_color": "#999999",
-              "slide_title": "Image slide",
+              "slide_title": "",
               "slide_title_color": "#ffffff",
               "subheading": "",
               "subheading_color": "#ffffff",
-              "btn_description": "Description",
+              "btn_description": "",
               "button_label": "",
               "button_link": "",
               "stylebtns": "btn-theme",
