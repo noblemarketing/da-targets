@@ -652,11 +652,12 @@
       "slideshow-1": {
         "type": "slideshow-1",
         "blocks": {
-          "image_7hqYUX": {
+          "image_ikLT3h": {
             "type": "image",
+            "disabled": true,
             "settings": {
-              "image": "shopify://shop_images/InstantDB_Bannwe.jpg",
-              "image_mobile": "shopify://shop_images/InstantDB_Banner_Mobile.jpg",
+              "image": "shopify://shop_images/1_5e079b66-4685-4a97-ae6b-11e8a192832e.jpg",
+              "image_mobile": "shopify://shop_images/30_off_sitewide.jpg",
               "alignment": "center center",
               "text_alignment": "center center",
               "bgwrap": "#f8ede7",
@@ -666,11 +667,11 @@
               "opacity_overlay": 0.4,
               "slide_toptitle": "",
               "slide_toptitle_color": "#999999",
-              "slide_title": "",
+              "slide_title": "Image slide",
               "slide_title_color": "#ffffff",
               "subheading": "",
               "subheading_color": "#ffffff",
-              "btn_description": "",
+              "btn_description": "Description",
               "button_label": "",
               "button_link": "",
               "stylebtns": "btn-theme",
@@ -728,7 +729,6 @@
           "video_UV67Jq": {
             "type": "video",
             "name": "See Hits",
-            "disabled": true,
             "settings": {
               "video_url": "https://cdn.shopify.com/videos/c/o/v/8058cdafd1734cde9dc2e20c51e1e0ff.mp4",
               "video_url_mobile": "https://cdn.shopify.com/videos/c/o/v/36d10c1e5a4147b9acc4cf6f8e443d9e.mp4",
@@ -947,7 +947,7 @@
           }
         },
         "block_order": [
-          "image_7hqYUX",
+          "image_ikLT3h",
           "video_nDaUgK",
           "video_UV67Jq",
           "image_RkFUBi",
