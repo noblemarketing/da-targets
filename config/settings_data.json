@@ -654,7 +654,7 @@
         "blocks": {
           "image_ikLT3h": {
             "type": "image",
-            "disabled": true,
+            "name": "Black Friday",
             "settings": {
               "image": "shopify://shop_images/1_5e079b66-4685-4a97-ae6b-11e8a192832e.jpg",
               "image_mobile": "shopify://shop_images/30_off_sitewide.jpg",
